@@ -41,6 +41,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
+
 /**
  * An {@link IssueTabPanel2 issue tab panel} for displaying all Gerrit code reviews related to this
  * issue.
@@ -93,6 +95,9 @@ public class GerritReviewsTabPanel extends AbstractIssueTabPanel2 implements Iss
         {
             isShowing = false;
         }
+
+        if (configuration.getUseGerritProjectWhitelist() && ! isGerritProject(arg0.issue()))
+            isShowing = false;
 
         return ShowPanelReply.create(isShowing);
     }
@@ -165,5 +170,13 @@ public class GerritReviewsTabPanel extends AbstractIssueTabPanel2 implements Iss
                 }
             }
         }
+    }
+
+    private boolean isGerritProject(final Issue issue) {
+        if (issue.getProjectId() == null)
+            return false;
+
+        return !isEmpty(configuration.getIdsOfKnownGerritProjects()) &&
+                configuration.getIdsOfKnownGerritProjects().contains(issue.getProjectId().toString());
     }
 }
