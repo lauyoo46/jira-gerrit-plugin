@@ -107,11 +107,11 @@ public class IssueTypeOptionsProvider implements WebItemProvider {
         return expecting.equals(type) ? "aui-list-checked aui-checked" : "aui-list-checked";
     }
 
-    public static final boolean wantsSubtasks(final String gerritIssueType) {
+    public static boolean wantsSubtasks(final String gerritIssueType) {
         return SUBTASK_ONLY.equals(gerritIssueType) || ALL_ISSUES.equals(gerritIssueType);
     }
 
-    public static final boolean wantsIssue(final String gerritIssueType) {
+    public static boolean wantsIssue(final String gerritIssueType) {
         return ISSUE_ONLY.equals(gerritIssueType) || ALL_ISSUES.equals(gerritIssueType);
     }
 }

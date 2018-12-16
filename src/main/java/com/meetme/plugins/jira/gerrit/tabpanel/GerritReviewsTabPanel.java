@@ -27,6 +27,7 @@ import com.atlassian.jira.user.util.UserManager;
 import com.atlassian.jira.web.util.OutlookDate;
 import com.atlassian.jira.web.util.OutlookDateManager;
 import com.atlassian.sal.api.ApplicationProperties;
+import com.atlassian.sal.api.UrlMode;
 import com.atlassian.sal.api.message.I18nResolver;
 import com.meetme.plugins.jira.gerrit.data.GerritConfiguration;
 import com.meetme.plugins.jira.gerrit.data.IssueReviewsManager;
@@ -125,7 +126,7 @@ public class GerritReviewsTabPanel extends AbstractIssueTabPanel2 implements Iss
         } else {
             for (GerritChange change : reviews) {
                 setUsersForChangeApprovals(change);
-                issueActions.add(new GerritReviewIssueAction(descriptor(), change, dateTimeFormatter, applicationProperties.getBaseUrl()));
+                issueActions.add(new GerritReviewIssueAction(descriptor(), change, dateTimeFormatter, applicationProperties.getBaseUrl(UrlMode.AUTO)));
                 // issueActions.add(new GenericMessageAction("<pre>" + obj.toString(4) + "</pre>"));
             }
         }
