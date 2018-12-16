@@ -29,6 +29,7 @@ import com.meetme.plugins.jira.gerrit.data.GerritConfiguration;
 import com.meetme.plugins.jira.gerrit.data.IssueReviewsManager;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 public class SubtaskReviewsTabPanel extends AbstractIssueTabPanel2 implements IssueTabPanel2 {
     private final GerritConfiguration configuration;
@@ -66,7 +67,11 @@ public class SubtaskReviewsTabPanel extends AbstractIssueTabPanel2 implements Is
         if (isConfigurationReady()) {
             Collection<Issue> subtasks = request.issue().getSubTaskObjects();
             show = subtasks != null && subtasks.size() > 0;
+            if (configuration.getUseGerritProjectWhitelist() && !isGerritProject(request.issue())) {
+                show = false;
+            }
         }
+
 
         return ShowPanelReply.create(show);
     }
@@ -80,5 +85,13 @@ public class SubtaskReviewsTabPanel extends AbstractIssueTabPanel2 implements Is
 
         return configuration != null && configuration.getSshHostname() != null && configuration.getSshUsername() != null
                 && configuration.getSshPrivateKey() != null && configuration.getSshPrivateKey().exists();
+    }
+
+    private boolean isGerritProject(final Issue issue) {
+        if (issue.getProjectId() == null) {
+            return false;
+        }
+        return !isEmpty(configuration.getIdsOfKnownGerritProjects()) &&
+                configuration.getIdsOfKnownGerritProjects().contains(issue.getProjectId().toString());
     }
 }

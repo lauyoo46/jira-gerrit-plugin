@@ -13,12 +13,13 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.meetme.plugins.jira</groupId>
     <artifactId>gerrit-plugin</artifactId>
-    <version>3.5-SNAPSHOT</version>
+    <version>3.5.0</version>
 
     <organization>
         <name>MeetMe, Inc.</name>
@@ -111,7 +112,7 @@
         <dependency>
             <groupId>com.atlassian.sal</groupId>
             <artifactId>sal-api</artifactId>
-            <version>2.0.16</version>
+            <version>${atlas.sal.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -208,13 +209,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
@@ -251,6 +245,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -261,7 +256,7 @@
 
     <properties>
         <jira.version>7.2.0</jira.version>
-        <amps.version>6.2.6</amps.version>
+        <amps.version>6.3.15</amps.version>
         <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
         <atlassian.spring.scanner.version>1.2.13</atlassian.spring.scanner.version>
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
@@ -273,7 +268,9 @@
         <jira.rest.version>3.0.8</jira.rest.version>
         <atlas.template.version>3.0.0</atlas.template.version>
         <atlas.concurrent.version>3.0.0</atlas.concurrent.version>
-        <atlas.sal.version>3.0.5</atlas.sal.version>
+        <atlas.sal.version>3.1.0</atlas.sal.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <profiles>
