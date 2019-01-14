@@ -263,8 +263,8 @@
         <testkit.version>6.3.11</testkit.version>
         <quick.reload.version>1.30.5</quick.reload.version>
 
-        <jira.test.version>7.2.0</jira.test.version>
-        <jira.data.version>7.2.0</jira.data.version>
+        <jira.test.version>${jira.version}</jira.test.version>
+        <jira.data.version>${jira.version}</jira.data.version>
         <jira.rest.version>3.0.8</jira.rest.version>
         <atlas.template.version>3.0.0</atlas.template.version>
         <atlas.concurrent.version>3.0.0</atlas.concurrent.version>
