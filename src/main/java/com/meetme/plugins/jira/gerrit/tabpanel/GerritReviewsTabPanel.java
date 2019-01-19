@@ -42,6 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
@@ -138,11 +139,15 @@ public class GerritReviewsTabPanel extends AbstractIssueTabPanel2 implements Iss
     }
 
     private ApplicationUser getUserByEmail(String email) {
-        if (email == null || email.isEmpty()){
+        if (email == null || email.isEmpty()) {
             return null;
         }
         final UserSearchService userSearchService = ComponentAccessor.getComponent(UserSearchService.class);
-        return userSearchService.findUsersByEmail(email).iterator().next();
+        Iterator<ApplicationUser> users = userSearchService.findUsersByEmail(email).iterator();
+        if (users.hasNext()) {
+            return users.next();
+        }
+        return null;
     }
 
     private boolean isConfigurationReady() {

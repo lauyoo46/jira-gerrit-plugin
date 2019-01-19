@@ -15,9 +15,9 @@ package com.meetme.plugins.jira.gerrit.workflow;
 
 import java.util.Map;
 
-import com.atlassian.core.util.map.EasyMap;
 import com.atlassian.jira.plugin.workflow.AbstractWorkflowPluginFactory;
 import com.atlassian.jira.plugin.workflow.WorkflowPluginConditionFactory;
+import com.google.common.collect.ImmutableMap;
 import com.meetme.plugins.jira.gerrit.workflow.condition.NoOpenReviews;
 import com.opensymphony.workflow.loader.AbstractDescriptor;
 import com.opensymphony.workflow.loader.ConditionDescriptor;
@@ -29,10 +29,10 @@ public class NoOpenReviewsConditionFactoryImpl extends AbstractWorkflowPluginFac
     public Map<String, ?> getDescriptorParams(Map<String, Object> conditionParams) {
         if (conditionParams != null && conditionParams.containsKey(NoOpenReviews.KEY_REVERSED))
         {
-            return EasyMap.build(NoOpenReviews.KEY_REVERSED, extractSingleParam(conditionParams, NoOpenReviews.KEY_REVERSED));
+            return ImmutableMap.of(NoOpenReviews.KEY_REVERSED, extractSingleParam(conditionParams, NoOpenReviews.KEY_REVERSED));
         }
 
-        return EasyMap.build();
+        return ImmutableMap.of();
     }
 
     @Override

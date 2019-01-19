@@ -18,9 +18,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.atlassian.core.util.map.EasyMap;
 import com.atlassian.jira.plugin.workflow.AbstractWorkflowPluginFactory;
 import com.atlassian.jira.plugin.workflow.WorkflowPluginConditionFactory;
+import com.google.common.collect.ImmutableMap;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritApproval;
 import com.meetme.plugins.jira.gerrit.workflow.condition.ApprovalScore;
 import com.opensymphony.workflow.loader.AbstractDescriptor;
@@ -44,7 +44,7 @@ public class ApprovalScoreConditionFactoryImpl extends AbstractWorkflowPluginFac
             return extractMultipleParams(conditionParams, ALL_PARAMS);
         }
 
-        return EasyMap.build();
+        return ImmutableMap.of();
     }
 
     @Override

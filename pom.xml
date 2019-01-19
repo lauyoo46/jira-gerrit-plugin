@@ -94,13 +94,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.atlassian.plugin</groupId>
-            <artifactId>atlassian-spring-scanner-annotation</artifactId>
-            <version>${atlassian.spring.scanner.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- Project Atlassian requirements -->
         <dependency>
             <groupId>com.atlassian.sal</groupId>
@@ -228,28 +221,6 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <groupId>com.atlassian.plugin</groupId>
-                <artifactId>atlassian-spring-scanner-maven-plugin</artifactId>
-                <version>${atlassian.spring.scanner.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>atlassian-spring-scanner</goal>
-                        </goals>
-                        <phase>process-classes</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <scannedDependencies>
-                        <dependency>
-                            <groupId>com.atlassian.plugin</groupId>
-                            <artifactId>atlassian-spring-scanner-external-jar</artifactId>
-                        </dependency>
-                    </scannedDependencies>
-                    <verbose>false</verbose>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
@@ -265,7 +236,6 @@
         <jira.version>7.2.0</jira.version>
         <amps.version>6.3.15</amps.version>
         <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
-        <atlassian.spring.scanner.version>1.2.13</atlassian.spring.scanner.version>
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
         <testkit.version>6.3.11</testkit.version>
         <quick.reload.version>1.30.5</quick.reload.version>

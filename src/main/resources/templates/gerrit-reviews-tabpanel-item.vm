@@ -137,11 +137,11 @@
                 </tr>
                 #end
 
-                #foreach( $approval in $change.patchSet.approvals )
+                #foreach( $approval in ${change.patchSet.approvals} )
                 <tr>
                     <td>
-                        #if ($approval.user)
-                        <a class="user-hover" rel="$approval.user.name" href="${baseurl}/secure/ViewProfile.jspa?name=${approval.user.name}">${approval.user.displayName}</a>
+                        #if (${approval.user})
+                        <a class="user-hover" rel="${approval.user.name}" href="${baseurl}/secure/ViewProfile.jspa?name=${approval.user.name}">${approval.user.displayName}</a>
                         #else
                         ${approval.by}
                         #end

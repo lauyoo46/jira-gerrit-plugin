@@ -15,9 +15,9 @@ package com.meetme.plugins.jira.gerrit.workflow;
 
 import java.util.Map;
 
-import com.atlassian.core.util.map.EasyMap;
 import com.atlassian.jira.plugin.workflow.AbstractWorkflowPluginFactory;
 import com.atlassian.jira.plugin.workflow.WorkflowPluginFunctionFactory;
+import com.google.common.collect.ImmutableMap;
 import com.meetme.plugins.jira.gerrit.workflow.function.ApprovalFunction;
 import com.opensymphony.workflow.loader.AbstractDescriptor;
 import com.opensymphony.workflow.loader.FunctionDescriptor;
@@ -35,11 +35,11 @@ public class ApproveReviewFactoryImpl extends AbstractWorkflowPluginFactory impl
     @Override
     public Map<String, ?> getDescriptorParams(Map<String, Object> params) {
         if (params != null && params.containsKey(ApprovalFunction.KEY_CMD_ARGS)) {
-            return EasyMap.build(ApprovalFunction.KEY_CMD_ARGS, extractSingleParam(params, ApprovalFunction.KEY_CMD_ARGS));
+            return ImmutableMap.of(ApprovalFunction.KEY_CMD_ARGS, extractSingleParam(params, ApprovalFunction.KEY_CMD_ARGS));
         }
 
         // Create a 'hard coded' parameter
-        return EasyMap.build(ApprovalFunction.KEY_CMD_ARGS, ApprovalFunction.DEFAULT_CMD_ARGS);
+        return ImmutableMap.of(ApprovalFunction.KEY_CMD_ARGS, ApprovalFunction.DEFAULT_CMD_ARGS);
     }
 
     @Override

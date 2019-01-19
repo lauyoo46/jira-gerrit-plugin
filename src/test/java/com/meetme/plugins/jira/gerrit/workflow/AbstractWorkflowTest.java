@@ -8,12 +8,12 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import com.atlassian.core.util.collection.EasyList;
-import com.atlassian.core.util.map.EasyMap;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.MutableIssue;
@@ -81,8 +81,8 @@ public abstract class AbstractWorkflowTest {
 
         mockIssue.setKey("FOO-123");
 
-        transientVars = EasyMap.build("issue", mockIssue, "context", workflowContext);
-        args = EasyMap.build("username", mockUser.getName());
+        transientVars = ImmutableMap.of("issue", mockIssue, "context", workflowContext);
+        args = ImmutableMap.of("username", mockUser.getName());
     }
 
     protected void stubFailingReviews() throws GerritQueryException {

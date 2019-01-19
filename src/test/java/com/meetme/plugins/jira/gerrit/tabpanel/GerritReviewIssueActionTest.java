@@ -26,12 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.atlassian.core.util.map.EasyMap;
 import com.atlassian.jira.plugin.issuetabpanel.IssueTabPanelModuleDescriptor;
 import com.atlassian.jira.web.util.OutlookDate;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritApproval;
@@ -182,7 +182,7 @@ public class GerritReviewIssueActionTest {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> setUpExpectedVelocityParams() {
-        return (Map<String, Object>) EasyMap.build("change", (Object) change,
+        return (Map<String, Object>) ImmutableMap.of("change", (Object) change,
                 "formatLastUpdated", (Object) TEST_FORMATTED_LAST_UPDATED,
                 "isoLastUpdated", (Object) TEST_ISO_LAST_UPDATED,
                 "baseurl", (Object) BASE_URL);

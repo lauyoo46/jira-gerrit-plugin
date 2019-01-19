@@ -13,11 +13,12 @@
  */
 package com.meetme.plugins.jira.gerrit.tabpanel;
 
-import com.atlassian.core.util.map.EasyMap;
 import com.atlassian.jira.plugin.issuetabpanel.AbstractIssueAction;
 import com.atlassian.jira.plugin.issuetabpanel.IssueAction;
 import com.atlassian.jira.plugin.issuetabpanel.IssueTabPanelModuleDescriptor;
+
 import com.atlassian.jira.web.util.OutlookDate;
+import com.google.common.collect.ImmutableMap;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritApproval;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 
@@ -41,9 +42,8 @@ public class GerritReviewIssueAction extends AbstractIssueAction implements Issu
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    protected void populateVelocityParams(@SuppressWarnings("rawtypes") Map params) {
-        params.putAll(EasyMap.build("change", change,
+    protected void populateVelocityParams(Map params) {
+        params.putAll(ImmutableMap.of("change", change,
                 "formatLastUpdated", formatLastUpdated(),
                 "isoLastUpdated", isoFormatLastUpdated(),
                 "baseurl", this.baseUrl));
