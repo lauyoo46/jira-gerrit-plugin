@@ -13,9 +13,13 @@
  */
 package com.meetme.plugins.jira.gerrit.data;
 
+import com.atlassian.jira.issue.Issue;
+
 import java.io.File;
 import java.net.URI;
 import java.util.List;
+
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 public interface GerritConfiguration {
     int DEFAULT_SSH_PORT = 29418;
@@ -86,6 +90,8 @@ public interface GerritConfiguration {
 
     boolean isSshValid();
 
+    boolean isGerritProject(final Issue issue);
+
     List<String> getIdsOfKnownGerritProjects();
     void setIdsOfKnownGerritProjects(List<String> idsOfSelectedGerritProjects);
 
@@ -112,4 +118,5 @@ public interface GerritConfiguration {
             super(message, cause, enableSuppression, writableStackTrace);
         }
     }
+
 }

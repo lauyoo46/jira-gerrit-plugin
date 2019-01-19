@@ -68,7 +68,7 @@ public class SubtaskReviewsTabPanel extends AbstractIssueTabPanel2 implements Is
         if (isConfigurationReady()) {
             Collection<Issue> subtasks = request.issue().getSubTaskObjects();
             show = subtasks != null && subtasks.size() > 0;
-            if (configuration.getUseGerritProjectWhitelist() && !isGerritProject(request.issue())) {
+            if (configuration.getUseGerritProjectWhitelist() && !configuration.isGerritProject(request.issue())) {
                 show = false;
             }
         }
@@ -88,7 +88,4 @@ public class SubtaskReviewsTabPanel extends AbstractIssueTabPanel2 implements Is
                 && configuration.getSshPrivateKey() != null && configuration.getSshPrivateKey().exists();
     }
 
-    private boolean isGerritProject(final Issue issue) {
-        return issue.getProjectId() != null && !isEmpty(configuration.getIdsOfKnownGerritProjects()) && configuration.getIdsOfKnownGerritProjects().contains(issue.getProjectId().toString());
-    }
 }

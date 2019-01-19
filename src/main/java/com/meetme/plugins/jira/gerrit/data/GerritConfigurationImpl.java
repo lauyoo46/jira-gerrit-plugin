@@ -13,6 +13,7 @@
  */
 package com.meetme.plugins.jira.gerrit.data;
 
+import com.atlassian.jira.issue.Issue;
 import com.atlassian.sal.api.pluginsettings.PluginSettings;
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.google.common.base.Strings;
@@ -22,6 +23,8 @@ import com.sonymobile.tools.gerrit.gerritevents.GerritDefaultValues;
 import java.io.File;
 import java.net.URI;
 import java.util.List;
+
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 /**
  * {@link GerritConfiguration} implementation that uses {@link PluginSettings} to store
@@ -161,6 +164,11 @@ public class GerritConfigurationImpl implements GerritConfiguration {
                 && !Strings.isNullOrEmpty(getSshUsername())
                 && getSshPrivateKey() != null
                 && getSshPrivateKey().exists();
+    }
+
+    @Override
+    public boolean isGerritProject(final Issue issue) {
+        return issue.getProjectId() != null && !isEmpty(getIdsOfKnownGerritProjects()) && getIdsOfKnownGerritProjects().contains(issue.getProjectId().toString());
     }
 
     @Override
