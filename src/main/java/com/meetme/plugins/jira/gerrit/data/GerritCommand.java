@@ -23,7 +23,6 @@ import com.atlassian.jira.user.preferences.ExtendedPreferences;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.Authentication;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.SshConnection;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.SshConnectionFactory;
-import com.sonymobile.tools.gerrit.gerritevents.ssh.SshException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

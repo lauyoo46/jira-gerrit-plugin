@@ -147,6 +147,18 @@ public class GerritConfigurationImpl implements GerritConfiguration {
     }
 
     @Override
+    public long getCacheTimeout() {
+        String timeout = (String) settings.get(FIELD_SSH_TIMEOUT);
+        return timeout == null ? DEFAULT_CACHE_TIMEOUT : Integer.parseInt(timeout);
+    }
+
+    @Override
+    public void setCacheTimeout(long connectionTimeout) {
+        settings.put(FIELD_CACHE_TIMEOUT, connectionTimeout < 0 ? DEFAULT_CACHE_TIMEOUT : Long.toString(connectionTimeout));
+    }
+
+
+    @Override
     public boolean getShowsEmptyPanel() {
         String shows = (String) settings.get(FIELD_SHOW_EMPTY_PANEL);
         // if not already set, defaults to true

@@ -44,6 +44,9 @@ public interface GerritConfiguration {
     String FIELD_KNOWN_GERRIT_PROJECTS = "knownGerritProjects";
     String FIELD_USE_GERRIT_PROJECT_WHITELIST = "useGerritProjectWhitelist";
 
+    long DEFAULT_CACHE_TIMEOUT = 30000;
+    String FIELD_CACHE_TIMEOUT = "cacheTimeout";
+
     URI getHttpBaseUrl();
 
     String getHttpPassword();
@@ -66,6 +69,8 @@ public interface GerritConfiguration {
 
     int getConnectionTimeout();
 
+    long getCacheTimeout();
+
     void setHttpBaseUrl(String httpBaseUrl);
 
     void setHttpPassword(String httpPassword);
@@ -87,6 +92,8 @@ public interface GerritConfiguration {
     void setShowEmptyPanel(boolean show);
 
     void setConnectionTimeout(int connectionTimeout);
+
+    void setCacheTimeout(long cacheTimeout);
 
     boolean isSshValid();
 

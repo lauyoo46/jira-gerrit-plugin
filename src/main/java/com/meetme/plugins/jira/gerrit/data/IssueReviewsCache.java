@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.meetme.plugins.jira.gerrit.data.GerritConfiguration.DEFAULT_CACHE_TIMEOUT;
+
 /**
  * Created by jhansche on 9/2/16.
  */
@@ -15,7 +17,7 @@ public class IssueReviewsCache {
     private static final int CACHE_CAPACITY = 30;
 
     /** Number of milliseconds an item may stay in cache: 30 seconds */
-    private static final long CACHE_EXPIRATION = 30000;
+    private static final long CACHE_EXPIRATION = DEFAULT_CACHE_TIMEOUT;
 
     /**
      * LRU (least recently used) Cache object to avoid slamming the Gerrit server too many times.

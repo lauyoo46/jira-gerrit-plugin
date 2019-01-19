@@ -133,7 +133,7 @@
 
             <fieldset class="group">
                 <input class="checkbox" type="checkbox" id="showEmptyPanel" name="showEmptyPanel" value="true"
-                    #if ($!showEmptyPanel == "true") checked="checked" #end />
+                    #if ($!{showEmptyPanel} == "true") checked="checked" #end />
                 <label for="showEmptyPanel">$i18n.getText("gerrit.admin.showEmptyPanel.label")</label>
                 <div class="description">$i18n.getText("gerrit.admin.showEmptyPanel.description")</div>
             </fieldset>
@@ -168,9 +168,16 @@
                 <script>
                     AJS.$("#allProjects").auiSelect2();
                 </script>
-                <div class="description">$i18n.getText("gerrit.admin.project.whitelist.description")</div>
+                <div class="description">${i18n.getText("gerrit.admin.project.whitelist.description")}</div>
             </div>
-
+            <div class="field-group">
+                <label for="cacheTimeout">
+                    ${i18n.getText("gerrit.admin.cacheTimeout.label")}
+                    <span class="aui-icon icon-required"></span>
+                </label>
+                <input type="text" id="cacheTimeout" name="cacheTimeout" class="text" value="$!{cacheTimeout}" />
+                <div class="description">${i18n.getText("gerrit.admin.cacheTimeout.description")}</div>
+            </div>
             <div class="buttons-container">
                 <div class="buttons">
                     <button type="submit" name="action" value="save" class="button submit">Save</button>

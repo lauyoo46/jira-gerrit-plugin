@@ -25,7 +25,6 @@ public class ShowReviewsWebPanelCondition implements Condition {
     private final IssueReviewsManager issueReviewsManager;
 
     public ShowReviewsWebPanelCondition(IssueReviewsManager reviewsManager, GerritConfiguration configurationManager) {
-
         issueReviewsManager = reviewsManager;
         gerritConfiguration = configurationManager;
     }

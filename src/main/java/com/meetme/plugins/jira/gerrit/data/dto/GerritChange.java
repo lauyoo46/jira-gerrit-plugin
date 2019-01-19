@@ -63,8 +63,8 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
     @Override
     public int compareTo(GerritChange obj) {
         if (this != obj && obj != null) {
-            int aNum = Integer.parseInt(this.getId());
-            int bNum = Integer.parseInt(obj.getId());
+            int aNum = Integer.parseInt(this.getNumber());
+            int bNum = Integer.parseInt(obj.getNumber());
 
             if (aNum == bNum) {
                 return 0;

@@ -120,7 +120,7 @@ public class AdminServlet extends HttpServlet {
         map.put(GerritConfiguration.FIELD_KNOWN_GERRIT_PROJECTS, projectsUsingGerrit);
         map.put(GerritConfiguration.FIELD_USE_GERRIT_PROJECT_WHITELIST, String.valueOf(config
                 .getUseGerritProjectWhitelist()));
-
+        map.put(GerritConfiguration.FIELD_CACHE_TIMEOUT, config.getConnectionTimeout());
         return map;
     }
 
