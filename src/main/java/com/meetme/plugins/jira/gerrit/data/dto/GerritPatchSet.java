@@ -18,14 +18,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sonymobile.tools.gerrit.gerritevents.dto.GerritEventKeys;
+import com.sonymobile.tools.gerrit.gerritevents.dto.attr.PatchSet;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.dto.GerritEventKeys;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.dto.attr.PatchSet;
 
 public class GerritPatchSet extends PatchSet {
     private static final Logger log = LoggerFactory.getLogger(GerritPatchSet.class);

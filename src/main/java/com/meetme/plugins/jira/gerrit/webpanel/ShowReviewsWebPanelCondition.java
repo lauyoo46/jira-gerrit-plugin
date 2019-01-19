@@ -4,7 +4,7 @@ import com.atlassian.jira.issue.Issue;
 import com.atlassian.plugin.web.Condition;
 import com.meetme.plugins.jira.gerrit.data.GerritConfiguration;
 import com.meetme.plugins.jira.gerrit.data.IssueReviewsManager;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

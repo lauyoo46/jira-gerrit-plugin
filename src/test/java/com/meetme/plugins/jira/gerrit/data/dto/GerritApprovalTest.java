@@ -34,10 +34,10 @@ public class GerritApprovalTest {
     private final JSONObject BASE_TEST = new JSONObject();
 
     private static final String EXPECTED_NAME = "Name";
+    private static final String EXPECTED_USERNAME = "Username";
     private static final String EXPECTED_EMAIL = "user@email.local";
     private static final String EXPECTED_TYPE = "Code-Review";
     private static final String EXPECTED_VALUE = "1";
-
     private static final String GREATER_VALUE = "2";
 
     @Mock
@@ -55,15 +55,16 @@ public class GerritApprovalTest {
         BASE_TEST.clear();
     }
 
-    private static void setUpJson(JSONObject obj) {
+    private static void setUpAccountJson(JSONObject obj) {
         JSONObject by = new JSONObject();
-        by.element("name", EXPECTED_NAME).element("email", EXPECTED_EMAIL);
+        by.element("name", EXPECTED_NAME).element("email", EXPECTED_EMAIL).element("username", EXPECTED_USERNAME);
         obj.element("by", by);
     }
 
     private static void assertFull(GerritApproval obj) {
-        assertEquals(EXPECTED_NAME, obj.getBy());
-        assertEquals(EXPECTED_EMAIL, obj.getByEmail());
+        assertEquals(EXPECTED_NAME, obj.getBy().getName());
+        assertEquals(EXPECTED_EMAIL, obj.getBy().getEmail());
+        assertEquals(EXPECTED_USERNAME, obj.getBy().getUsername());
         assertEquals(EXPECTED_TYPE, obj.getType());
         assertEquals(EXPECTED_VALUE, obj.getValue());
         assertEquals(1, obj.getValueAsInt());
@@ -77,7 +78,6 @@ public class GerritApprovalTest {
         assertNull(obj.getValue());
 
         assertNull(obj.getBy());
-        assertNull(obj.getByEmail());
         assertEquals(0, obj.getValueAsInt());
     }
 
@@ -86,7 +86,6 @@ public class GerritApprovalTest {
         GerritApproval obj = new GerritApproval(BASE_TEST);
 
         assertNull(obj.getBy());
-        assertNull(obj.getByEmail());
 
         assertEquals(EXPECTED_TYPE, obj.getType());
         assertEquals(EXPECTED_VALUE, obj.getValue());
@@ -95,7 +94,7 @@ public class GerritApprovalTest {
 
     @Test
     public void testParseByFromJson() {
-        setUpJson(BASE_TEST);
+        setUpAccountJson(BASE_TEST);
 
         GerritApproval obj = new GerritApproval(BASE_TEST);
         assertFull(obj);
@@ -104,33 +103,46 @@ public class GerritApprovalTest {
     @Test
     public void testParseFromJson_NoEmail() {
         JSONObject by = new JSONObject();
-        by.element("name", EXPECTED_NAME);
+        by.element("name", EXPECTED_NAME).element("username", EXPECTED_USERNAME);
         BASE_TEST.element("by", by);
 
         GerritApproval obj = new GerritApproval(BASE_TEST);
-        assertNull(obj.getByEmail());
-        assertEquals(EXPECTED_NAME, obj.getBy());
+        assertNull(obj.getBy().getEmail());
+        assertEquals(EXPECTED_NAME, obj.getBy().getName());
+        assertEquals(EXPECTED_USERNAME, obj.getBy().getUsername());
     }
 
     @Test
     public void testParseFromJson_NoName() {
         JSONObject by = new JSONObject();
-        by.element("email", EXPECTED_EMAIL);
+        by.element("email", EXPECTED_EMAIL).element("username", EXPECTED_USERNAME);
         BASE_TEST.element("by", by);
 
         GerritApproval obj = new GerritApproval(BASE_TEST);
-        assertNull(obj.getBy());
-        assertEquals(EXPECTED_EMAIL, obj.getByEmail());
+        assertNull(obj.getBy().getName());
+        assertEquals(EXPECTED_EMAIL, obj.getBy().getEmail());
+        assertEquals(EXPECTED_USERNAME, obj.getBy().getUsername());
+    }
+
+    @Test
+    public void testParseFromJson_NoUsername() {
+        JSONObject by = new JSONObject();
+        by.element("name", EXPECTED_NAME).element("email", EXPECTED_EMAIL);
+        BASE_TEST.element("by", by);
+
+        GerritApproval obj = new GerritApproval(BASE_TEST);
+        assertNull(obj.getBy().getUsername());
+        assertEquals(EXPECTED_NAME, obj.getBy().getName());
+        assertEquals(EXPECTED_EMAIL, obj.getBy().getEmail());
     }
 
     @Test
     public void testSetters() {
+        setUpAccountJson(BASE_TEST);
         GerritApproval obj = new GerritApproval(BASE_TEST);
 
         obj.setType(EXPECTED_TYPE);
         obj.setValue(EXPECTED_VALUE);
-        obj.setBy(EXPECTED_NAME);
-        obj.setByEmail(EXPECTED_EMAIL);
         obj.setUser(EXPECTED_USER);
 
         assertFull(obj);
@@ -140,7 +152,7 @@ public class GerritApprovalTest {
 
     @Test
     public void testToString() {
-        setUpJson(BASE_TEST);
+        setUpAccountJson(BASE_TEST);
         GerritApproval obj = new GerritApproval(BASE_TEST);
 
         assertEquals("+1 by Name", obj.toString());

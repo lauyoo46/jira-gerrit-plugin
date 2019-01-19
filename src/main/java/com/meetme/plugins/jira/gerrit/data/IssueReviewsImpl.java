@@ -18,10 +18,10 @@ import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 import com.atlassian.core.user.preferences.Preferences;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryHandler;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.ssh.Authentication;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.ssh.SshException;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandler;
+import com.sonymobile.tools.gerrit.gerritevents.ssh.Authentication;
+import com.sonymobile.tools.gerrit.gerritevents.ssh.SshException;
 
 import net.sf.json.JSONObject;
 
@@ -86,7 +86,7 @@ public class IssueReviewsImpl implements IssueReviewsManager {
         }
 
         Authentication auth = new Authentication(configuration.getSshPrivateKey(), configuration.getSshUsername());
-        GerritQueryHandler query = new GerritQueryHandler(configuration.getSshHostname(), configuration.getSshPort(), null, auth);
+        GerritQueryHandler query = new GerritQueryHandler(configuration.getSshHostname(), configuration.getSshPort(), null, auth, configuration.getConnectionTimeout());
         List<JSONObject> reviews;
 
         try {

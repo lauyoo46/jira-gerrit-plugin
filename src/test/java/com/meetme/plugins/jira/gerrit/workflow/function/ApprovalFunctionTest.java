@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.atlassian.jira.workflow.WorkflowException;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,8 +35,6 @@ import com.meetme.plugins.jira.gerrit.data.IssueReviewsManager;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 import com.meetme.plugins.jira.gerrit.workflow.AbstractWorkflowTest;
 import com.opensymphony.module.propertyset.PropertySet;
-import com.opensymphony.workflow.WorkflowException;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
 
 /**
  * @author Joe Hansche

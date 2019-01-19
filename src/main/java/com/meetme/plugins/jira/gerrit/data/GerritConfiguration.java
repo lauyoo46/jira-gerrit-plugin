@@ -21,12 +21,13 @@ public interface GerritConfiguration {
     int DEFAULT_SSH_PORT = 29418;
     String DEFAULT_QUERY_ISSUE = "tr:%s";
     String DEFAULT_QUERY_PROJECT = "message:%s-*";
+    int DEFAULT_SSH_TIMEOUT = 0;
 
     String FIELD_SSH_HOSTNAME = "sshHostname";
     String FIELD_SSH_USERNAME = "sshUsername";
     String FIELD_SSH_PORT = "sshPort";
     String FIELD_SSH_PRIVATE_KEY = "sshPrivateKey";
-
+    String FIELD_SSH_TIMEOUT = "sshTimeout";
     String FIELD_QUERY_ISSUE = "issueSearchQuery";
     String FIELD_QUERY_PROJECT = "projectSearchQuery";
 
@@ -59,6 +60,8 @@ public interface GerritConfiguration {
 
     boolean getShowsEmptyPanel();
 
+    int getConnectionTimeout();
+
     void setHttpBaseUrl(String httpBaseUrl);
 
     void setHttpPassword(String httpPassword);
@@ -78,6 +81,8 @@ public interface GerritConfiguration {
     void setSshUsername(String username);
 
     void setShowEmptyPanel(boolean show);
+
+    void setConnectionTimeout(int connectionTimeout);
 
     boolean isSshValid();
 

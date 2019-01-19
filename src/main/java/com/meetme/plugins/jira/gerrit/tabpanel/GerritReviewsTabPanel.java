@@ -36,8 +36,8 @@ import com.meetme.plugins.jira.gerrit.data.IssueReviewsManager;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritApproval;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritPatchSet;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
 
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -158,7 +158,7 @@ public class GerritReviewsTabPanel extends AbstractIssueTabPanel2 implements Iss
 
             if (approvals != null) {
                 for (GerritApproval approval : change.getPatchSet().getApprovals()) {
-                    String byEmail = approval.getByEmail();
+                    String byEmail = approval.getBy().getEmail();
                     approval.setUser(getUserByEmail(byEmail));
                 }
             }

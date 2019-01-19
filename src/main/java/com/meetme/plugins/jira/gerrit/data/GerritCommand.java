@@ -19,16 +19,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import com.sonymobile.tools.gerrit.gerritevents.ssh.Authentication;
+import com.sonymobile.tools.gerrit.gerritevents.ssh.SshConnection;
+import com.sonymobile.tools.gerrit.gerritevents.ssh.SshConnectionFactory;
+import com.sonymobile.tools.gerrit.gerritevents.ssh.SshException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.atlassian.core.user.preferences.Preferences;
 import com.jcraft.jsch.ChannelExec;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.ssh.Authentication;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.ssh.SshConnection;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.ssh.SshConnectionFactory;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.ssh.SshException;
 
 public class GerritCommand {
     private static final Logger log = LoggerFactory.getLogger(GerritCommand.class);

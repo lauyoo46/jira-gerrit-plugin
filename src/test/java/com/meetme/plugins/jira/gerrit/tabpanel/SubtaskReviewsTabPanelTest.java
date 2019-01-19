@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,8 +35,6 @@ import com.atlassian.jira.plugin.issuetabpanel.IssueAction;
 import com.atlassian.jira.user.ApplicationUser;
 import com.meetme.plugins.jira.gerrit.data.GerritConfiguration;
 import com.meetme.plugins.jira.gerrit.data.IssueReviewsManager;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
-
 /**
  * @author Joe Hansche
  */

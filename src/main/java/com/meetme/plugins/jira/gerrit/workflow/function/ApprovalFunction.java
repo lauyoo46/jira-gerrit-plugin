@@ -13,19 +13,19 @@
  */
 package com.meetme.plugins.jira.gerrit.workflow.function;
 
-import com.atlassian.core.user.preferences.Preferences;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.user.preferences.ExtendedPreferences;
 import com.atlassian.jira.user.preferences.UserPreferencesManager;
+import com.atlassian.jira.workflow.WorkflowException;
 import com.atlassian.jira.workflow.function.issue.AbstractJiraFunctionProvider;
 import com.meetme.plugins.jira.gerrit.data.GerritConfiguration;
 import com.meetme.plugins.jira.gerrit.data.IssueReviewsManager;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 import com.meetme.plugins.jira.gerrit.workflow.condition.ApprovalScore;
 import com.opensymphony.module.propertyset.PropertySet;
-import com.opensymphony.workflow.WorkflowException;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
 
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +85,7 @@ public class ApprovalFunction extends AbstractJiraFunctionProvider {
 
         final Issue issue = getIssue(transientVars);
         final List<GerritChange> issueReviews = getReviews(issue);
-        final Preferences prefs = getUserPrefs(transientVars, args);
+        final ExtendedPreferences prefs = getUserPrefs(transientVars, args);
         final String cmdArgs = (String) args.get(KEY_CMD_ARGS);
 
         boolean success = false;
@@ -102,9 +102,9 @@ public class ApprovalFunction extends AbstractJiraFunctionProvider {
         }
     }
 
-    protected Preferences getUserPrefs(@SuppressWarnings("rawtypes") Map transientVars, @SuppressWarnings("rawtypes") Map args) {
+    protected ExtendedPreferences getUserPrefs(@SuppressWarnings("rawtypes") Map transientVars, @SuppressWarnings("rawtypes") Map args) {
         final ApplicationUser user = getCallerUser(transientVars, args);
-        return prefsManager.getPreferences(user);
+        return prefsManager.getExtendedPreferences(user);
     }
 
     protected String getIssueKey(@SuppressWarnings("rawtypes") Map transientVars) {

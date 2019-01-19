@@ -64,6 +64,14 @@
                 <div class="description">$i18n.getText("gerrit.admin.username.description")</div>
             </div>
             <div class="field-group">
+                <label for="sshTimeout">
+                	$i18n.getText("gerrit.admin.sshTimeout.label")
+                	<span class="aui-icon icon-required"></span>
+                </label>
+                <input type="text" id="sshTimeout" name="sshTimeout" class="text" value="$!sshTimeout" />
+                <div class="description">$i18n.getText("gerrit.admin.sshTimeout.description")</div>
+            </div>
+            <div class="field-group">
                 <label for="sshPrivateKey">
                     $i18n.getText("gerrit.admin.sshKey.label"):
                     <span class="aui-icon icon-required"></span>

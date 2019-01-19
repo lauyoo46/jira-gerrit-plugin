@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -25,7 +26,6 @@ import com.meetme.plugins.jira.gerrit.data.GerritConfiguration;
 import com.meetme.plugins.jira.gerrit.data.IssueReviewsManager;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 import com.opensymphony.workflow.WorkflowContext;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
 
 /**
  * Base class for setting up mocks

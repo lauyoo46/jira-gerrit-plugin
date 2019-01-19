@@ -14,8 +14,9 @@
 package com.meetme.plugins.jira.gerrit.data.dto;
 
 import com.meetme.plugins.jira.gerrit.tabpanel.GerritEventKeys;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.dto.attr.Change;
 
+import com.sonymobile.tools.gerrit.gerritevents.dto.GerritChangeStatus;
+import com.sonymobile.tools.gerrit.gerritevents.dto.attr.Change;
 import net.sf.json.JSONObject;
 
 import java.util.Date;
@@ -42,7 +43,7 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
 
     private boolean isOpen;
 
-    private Status status;
+    private GerritChangeStatus status;
 
     public GerritChange() {
         super();
@@ -60,7 +61,6 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
      * refactored such that it is then dependent on a <i>later</i> change!
      */
     @Override
-    @SuppressWarnings("deprecation")
     public int compareTo(GerritChange obj) {
         if (this != obj && obj != null) {
             int aNum = Integer.parseInt(this.getNumber());
@@ -87,7 +87,7 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
         }
 
         if (json.containsKey(GerritEventKeys.STATUS)) {
-            this.setStatus(Status.valueOf(json.getString(GerritEventKeys.STATUS)));
+            this.setStatus(GerritChangeStatus.valueOf(json.getString(com.sonymobile.tools.gerrit.gerritevents.dto.GerritEventKeys.STATUS)));
         }
 
         this.isOpen = json.getBoolean(GerritEventKeys.OPEN);
@@ -101,7 +101,7 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
         return patchSet;
     }
 
-    public Status getStatus() {
+    public GerritChangeStatus getStatus() {
         return status;
     }
 
@@ -121,7 +121,7 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
         this.patchSet = patchSet;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(GerritChangeStatus status) {
         this.status = status;
     }
 }

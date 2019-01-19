@@ -17,6 +17,7 @@ import com.atlassian.sal.api.pluginsettings.PluginSettings;
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.sonymobile.tools.gerrit.gerritevents.GerritDefaultValues;
 
 import java.io.File;
 import java.net.URI;
@@ -129,6 +130,17 @@ public class GerritConfigurationImpl implements GerritConfiguration {
     @Override
     public void setSshUsername(String username) {
         settings.put(FIELD_SSH_USERNAME, username);
+    }
+
+    @Override
+    public int getConnectionTimeout() {
+        String timeout = (String) settings.get(FIELD_SSH_TIMEOUT);
+        return timeout == null ? DEFAULT_SSH_TIMEOUT : Integer.parseInt(timeout);
+    }
+
+    @Override
+    public void setConnectionTimeout(int connectionTimeout) {
+        settings.put(FIELD_SSH_TIMEOUT, connectionTimeout < 0 ? GerritDefaultValues.DEFAULT_GERRIT_SSH_CONNECTION_TIMEOUT : Integer.toString(connectionTimeout));
     }
 
     @Override

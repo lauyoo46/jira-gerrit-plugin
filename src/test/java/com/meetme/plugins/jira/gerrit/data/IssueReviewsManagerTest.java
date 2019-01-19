@@ -9,7 +9,7 @@ import com.atlassian.jira.mock.MockIssueManager;
 import com.atlassian.jira.mock.component.MockComponentWorker;
 import com.atlassian.jira.mock.issue.MockIssue;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

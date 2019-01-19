@@ -1,11 +1,11 @@
 /*
  * Copyright 2012 MeetMe, Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -23,9 +23,9 @@ import com.atlassian.templaterenderer.TemplateRenderer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.meetme.plugins.jira.gerrit.data.GerritConfiguration;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryHandler;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.ssh.Authentication;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandler;
+import com.sonymobile.tools.gerrit.gerritevents.ssh.Authentication;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
@@ -55,7 +55,7 @@ public class AdminServlet extends HttpServlet {
     private static final long serialVersionUID = -9175363090552720328L;
     private static final Logger log = LoggerFactory.getLogger(AdminServlet.class);
 
-    private static final Object[] PACKAGE_PARTS = new String[] { "com", "meetme", "plugins", "jira", "gerrit" };
+    private static final Object[] PACKAGE_PARTS = new String[]{"com", "meetme", "plugins", "jira", "gerrit"};
     private static final String CONTENT_TYPE = "text/html;charset=utf-8";
 
     private static final String FIELD_ACTION = "action";
@@ -72,7 +72,7 @@ public class AdminServlet extends HttpServlet {
     private final GerritConfiguration configurationManager;
 
     public AdminServlet(final UserManager userManager, final LoginUriProvider loginUriProvider, final TemplateRenderer renderer,
-            final JiraHome jiraHome, final GerritConfiguration configurationManager, final ProjectManager projectManager) {
+                        final JiraHome jiraHome, final GerritConfiguration configurationManager, final ProjectManager projectManager) {
         this.userManager = userManager;
         this.loginUriProvider = loginUriProvider;
         this.renderer = renderer;
@@ -101,7 +101,7 @@ public class AdminServlet extends HttpServlet {
         map.put(GerritConfiguration.FIELD_SSH_PORT, config.getSshPort());
         map.put(GerritConfiguration.FIELD_SSH_USERNAME, config.getSshUsername());
         map.put(GerritConfiguration.FIELD_SSH_PRIVATE_KEY, config.getSshPrivateKey());
-
+        map.put(GerritConfiguration.FIELD_SSH_TIMEOUT, config.getConnectionTimeout());
         map.put(GerritConfiguration.FIELD_QUERY_ISSUE, config.getIssueSearchQuery());
         map.put(GerritConfiguration.FIELD_QUERY_PROJECT, config.getProjectSearchQuery());
 
@@ -197,7 +197,7 @@ public class AdminServlet extends HttpServlet {
         }
 
         Authentication auth = new Authentication(configuration.getSshPrivateKey(), configuration.getSshUsername());
-        GerritQueryHandler query = new GerritQueryHandler(configuration.getSshHostname(), configuration.getSshPort(), null, auth);
+        GerritQueryHandler query = new GerritQueryHandler(configuration.getSshHostname(), configuration.getSshPort(), null, auth, configuration.getConnectionTimeout());
 
         try {
             query.queryJava("limit:1", false, false, false);
@@ -243,6 +243,9 @@ public class AdminServlet extends HttpServlet {
                     break;
                 case GerritConfiguration.FIELD_SSH_PORT:
                     configurationManager.setSshPort(Integer.parseInt(item.getString()));
+                    break;
+                case GerritConfiguration.FIELD_SSH_TIMEOUT:
+                    configurationManager.setConnectionTimeout(Integer.parseInt(item.getString()));
                     break;
                 case GerritConfiguration.FIELD_QUERY_ISSUE:
                     configurationManager.setIssueSearchQuery(item.getString());

@@ -13,13 +13,12 @@
  */
 package com.meetme.plugins.jira.gerrit.data;
 
-import com.atlassian.core.user.preferences.Preferences;
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.project.Project;
+import com.atlassian.jira.user.preferences.ExtendedPreferences;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
-import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryHandler;
 
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandler;
 import net.sf.json.JSONObject;
 
 import java.io.IOException;
@@ -52,9 +51,9 @@ public interface IssueReviewsManager {
      * @param issue the JIRA issue
      * @param changes the set of Gerrit changes
      * @param args arguments to add to each approval
-     * @param prefs the {@link Preferences} for the viewing user
+     * @param prefs the {@link ExtendedPreferences} for the viewing user
      * @return whether the approvals were successful
      * @throws IOException if so
      */
-    boolean doApprovals(Issue issue, List<GerritChange> changes, String args, Preferences prefs) throws IOException;
+    boolean doApprovals(Issue issue, List<GerritChange> changes, String args, ExtendedPreferences prefs) throws IOException;
 }
