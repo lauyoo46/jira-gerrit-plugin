@@ -47,7 +47,7 @@ public class GerritPatchSet extends PatchSet {
 
         if (json.containsKey(GerritEventKeys.APPROVALS)) {
             JSONArray eventApprovals = json.getJSONArray(GerritEventKeys.APPROVALS);
-            approvals = new ArrayList<GerritApproval>(eventApprovals.size());
+            approvals = new ArrayList<>(eventApprovals.size());
 
             for (int i = 0; i < eventApprovals.size(); i++) {
                 GerritApproval approval = new GerritApproval(eventApprovals.getJSONObject(i));

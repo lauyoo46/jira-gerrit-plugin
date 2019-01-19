@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.atlassian.jira.user.preferences.ExtendedPreferences;
 import com.atlassian.jira.workflow.WorkflowException;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import org.junit.After;
@@ -28,7 +29,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import com.atlassian.core.user.preferences.Preferences;
 import com.atlassian.jira.user.preferences.UserPreferencesManager;
 import com.meetme.plugins.jira.gerrit.data.GerritConfiguration;
 import com.meetme.plugins.jira.gerrit.data.IssueReviewsManager;
@@ -45,7 +45,7 @@ public abstract class ApprovalFunctionTest extends AbstractWorkflowTest {
     @Mock
     UserPreferencesManager userPrefsManager;
     @Mock
-    Preferences mockPrefs;
+    ExtendedPreferences mockPrefs;
 
     @Before
     public void setUp() throws Exception {
@@ -108,7 +108,7 @@ public abstract class ApprovalFunctionTest extends AbstractWorkflowTest {
     /**
      * Test method for {@link ApprovalFunction#execute(Map, Map, PropertySet)}.
      *
-     * @throws WorkflowException
+     * @throws WorkflowException Jira core exception
      */
     @Test(expected = IllegalStateException.class)
     public void testExecute_notReady() throws WorkflowException {
@@ -126,7 +126,7 @@ public abstract class ApprovalFunctionTest extends AbstractWorkflowTest {
     @Test
     public void testGetUserPrefs() {
         ApprovalFunction obj = new ApprovalFunction(configuration, reviewsManager, userPrefsManager);
-        Preferences actual = obj.getUserPrefs(transientVars, args);
+        ExtendedPreferences actual = obj.getUserPrefs(transientVars, args);
         assertSame(mockPrefs, actual);
     }
 

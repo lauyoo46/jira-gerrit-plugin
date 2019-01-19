@@ -66,14 +66,14 @@ public class ApprovalFunction extends AbstractJiraFunctionProvider {
 
     private final IssueReviewsManager reviewsManager;
     private final GerritConfiguration configuration;
-    private final UserPreferencesManager prefsManager;
+    private final UserPreferencesManager userPreferencesManager;
 
     public ApprovalFunction(GerritConfiguration configuration, IssueReviewsManager reviewsManager, UserPreferencesManager prefsManager) {
         super();
 
         this.configuration = configuration;
         this.reviewsManager = reviewsManager;
-        this.prefsManager = prefsManager;
+        this.userPreferencesManager = prefsManager;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ApprovalFunction extends AbstractJiraFunctionProvider {
 
     protected ExtendedPreferences getUserPrefs(@SuppressWarnings("rawtypes") Map transientVars, @SuppressWarnings("rawtypes") Map args) {
         final ApplicationUser user = getCallerUser(transientVars, args);
-        return prefsManager.getExtendedPreferences(user);
+        return userPreferencesManager.getExtendedPreferences(user);
     }
 
     protected String getIssueKey(@SuppressWarnings("rawtypes") Map transientVars) {

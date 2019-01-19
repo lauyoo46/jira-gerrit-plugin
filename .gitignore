@@ -1,7 +1,7 @@
-work/
-target/
-bin/
-
+work
+target
+bin
+.DS_Store
 #IDE specific files
 .project
 .classpath

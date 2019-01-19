@@ -36,7 +36,6 @@
     <component-import interface="com.atlassian.sal.api.ApplicationProperties" key="applicationProperties" />
     <component-import interface="com.atlassian.sal.api.message.I18nResolver" key="i18nResolver" />
     <component-import interface="com.atlassian.jira.web.util.OutlookDateManager" key="outlookDateManager" />
-
     <!-- Our Components -->
 
     <component name="Configuration Manager" class="com.meetme.plugins.jira.gerrit.data.GerritConfigurationImpl" key="configurationManager">

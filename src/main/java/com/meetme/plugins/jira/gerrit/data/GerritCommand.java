@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import com.atlassian.jira.user.preferences.ExtendedPreferences;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.Authentication;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.SshConnection;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.SshConnectionFactory;
@@ -26,7 +27,6 @@ import com.sonymobile.tools.gerrit.gerritevents.ssh.SshException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.atlassian.core.user.preferences.Preferences;
 import com.jcraft.jsch.ChannelExec;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 
@@ -34,11 +34,11 @@ public class GerritCommand {
     private static final Logger log = LoggerFactory.getLogger(GerritCommand.class);
     private final static String BASE_COMMAND = "gerrit review";
     private GerritConfiguration config;
-    private Preferences userPreferences;
+    private ExtendedPreferences extendedPreferences;
 
-    public GerritCommand(GerritConfiguration config, Preferences userPreferences) {
+    public GerritCommand(GerritConfiguration config, ExtendedPreferences extendedPreferences) {
         this.config = config;
-        this.userPreferences = userPreferences;
+        this.extendedPreferences = extendedPreferences;
     }
 
     public boolean doReview(GerritChange change, String args) throws IOException {
@@ -102,11 +102,11 @@ public class GerritCommand {
     private Authentication getAuthentication() {
         Authentication auth = null;
 
-        if (userPreferences != null) {
+        if (extendedPreferences != null) {
             // Attempt to get a per-user authentication mechanism, so JIRA can act as the user.
             try {
-                String privateKey = userPreferences.getString("gerrit.privateKey");
-                String username = userPreferences.getString("gerrit.username");
+                String privateKey = extendedPreferences.getString("gerrit.privateKey");
+                String username = extendedPreferences.getString("gerrit.username");
 
                 if (privateKey != null && username != null && !privateKey.isEmpty() && !username.isEmpty())
                 {

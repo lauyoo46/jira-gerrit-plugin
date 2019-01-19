@@ -13,9 +13,9 @@
  */
 package com.meetme.plugins.jira.gerrit.data;
 
+import com.atlassian.jira.user.preferences.ExtendedPreferences;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 
-import com.atlassian.core.user.preferences.Preferences;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
@@ -117,12 +117,12 @@ public class IssueReviewsImpl implements IssueReviewsManager {
     }
 
     @Override
-    public boolean doApprovals(Issue issue, List<GerritChange> changes, String args, Preferences prefs) throws IOException {
+    public boolean doApprovals(Issue issue, List<GerritChange> changes, String args, ExtendedPreferences prefs) throws IOException {
         Set<String> issueKeys = getIssueKeys(issue);
 
         boolean result = true;
         for (String issueKey : issueKeys) {
-            GerritCommand command = new GerritCommand(configuration, prefs);
+            GerritCommand command = new GerritCommand(configuration,prefs);
 
             boolean commandResult = command.doReviews(changes, args);
             result &= commandResult;
