@@ -13,6 +13,8 @@
  */
 package com.meetme.plugins.jira.gerrit.tabpanel;
 
+import com.atlassian.jira.bc.user.search.UserSearchService;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.tabpanels.GenericMessageAction;
 import com.atlassian.jira.plugin.issuetabpanel.AbstractIssueTabPanel2;
@@ -41,7 +43,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
+
 /**
  * An {@link IssueTabPanel2 issue tab panel} for displaying all Gerrit code reviews related to this
  * issue.
@@ -60,8 +64,8 @@ public class GerritReviewsTabPanel extends AbstractIssueTabPanel2 implements Iss
 
     //TODO: Update OutlookDateManager to DateFormatter
     public GerritReviewsTabPanel(UserManager userManager, OutlookDateManager dateTimeFormatterFactory,
-            ApplicationProperties applicationProperties, GerritConfiguration configuration,
-            IssueReviewsManager reviewsManager, I18nResolver i18n) {
+                                 ApplicationProperties applicationProperties, GerritConfiguration configuration,
+                                 IssueReviewsManager reviewsManager, I18nResolver i18n) {
         this.userManager = userManager;
         this.dateTimeFormatter = dateTimeFormatterFactory.getOutlookDate(null);
         this.applicationProperties = applicationProperties;
@@ -90,8 +94,7 @@ public class GerritReviewsTabPanel extends AbstractIssueTabPanel2 implements Iss
     public ShowPanelReply showPanel(ShowPanelRequest arg0) {
         boolean isShowing = true;
 
-        if (!isConfigurationReady())
-        {
+        if (!isConfigurationReady()) {
             isShowing = false;
         }
         if (configuration.getUseGerritProjectWhitelist() && !isGerritProject(arg0.issue())) {
@@ -135,19 +138,11 @@ public class GerritReviewsTabPanel extends AbstractIssueTabPanel2 implements Iss
     }
 
     private ApplicationUser getUserByEmail(String email) {
-        ApplicationUser user = null;
-
-        if (email != null) {
-            for (ApplicationUser iUser : userManager.getUsers()) {
-                if (email.equalsIgnoreCase(iUser.getEmailAddress()))
-                {
-                    user = iUser;
-                    break;
-                }
-            }
+        if (email == null || email.isEmpty()){
+            return null;
         }
-
-        return user;
+        final UserSearchService userSearchService = ComponentAccessor.getComponent(UserSearchService.class);
+        return userSearchService.findUsersByEmail(email).iterator().next();
     }
 
     private boolean isConfigurationReady() {

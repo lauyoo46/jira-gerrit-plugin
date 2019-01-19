@@ -17,6 +17,7 @@ import com.atlassian.jira.config.util.JiraHome;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.sal.api.auth.LoginUriProvider;
+import com.atlassian.sal.api.user.UserKey;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.google.common.collect.Lists;
@@ -82,7 +83,7 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
-        String username = userManager.getRemoteUsername(request);
+        UserKey username = userManager.getRemoteUserKey(request);
 
         if (username == null || !userManager.isSystemAdmin(username)) {
             redirectToLogin(request, response);
@@ -140,7 +141,7 @@ public class AdminServlet extends HttpServlet {
     }
 
     private Map<String, Object> handlePost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String username = userManager.getRemoteUsername(req);
+        UserKey username = userManager.getRemoteUserKey(req);
 
         if (username == null || !userManager.isSystemAdmin(username)) {
             redirectToLogin(req, resp);
