@@ -56,7 +56,7 @@ public abstract class ApprovalFunctionTest extends AbstractWorkflowTest {
     }
 
     private void setUpUserPrefs() {
-        when(userPrefsManager.getPreferences(mockUser)).thenReturn(mockPrefs);
+        when(userPrefsManager.getExtendedPreferences(mockUser)).thenReturn(mockPrefs);
     }
 
     @After

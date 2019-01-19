@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import com.atlassian.core.util.collection.EasyList;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.MutableIssue;
@@ -93,7 +93,7 @@ public abstract class AbstractWorkflowTest {
     @SuppressWarnings("unchecked")
     protected void stubEmptyReviews() throws GerritQueryException {
         @SuppressWarnings("rawtypes")
-        List reviews = EasyList.build();
+        List reviews = Lists.newArrayList();
         when(reviewsManager.getReviewsForIssue(mockIssue)).thenReturn(reviews);
     }
 
@@ -101,7 +101,7 @@ public abstract class AbstractWorkflowTest {
     protected void stubOneReview() throws GerritQueryException {
         GerritChange change = mock(GerritChange.class);
         @SuppressWarnings("rawtypes")
-        List reviews = EasyList.build(change);
+        List reviews = Lists.newArrayList(change);
         when(reviewsManager.getReviewsForIssue(mockIssue)).thenReturn(reviews);
     }
 

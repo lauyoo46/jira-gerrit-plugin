@@ -27,10 +27,10 @@ limitations under the License.
 
         #if( 0 > $value && $significant > $value )
             #set( $significant = $value )
-            #set( $by = "By ${approval.by}" )
+            #set( $by = "By ${approval.by.name}" )
         #elseif( $value > 0 && $value > $significant && $significant >= 0 )
             #set( $significant = $value )
-            #set( $by = "By ${approval.by}" )
+            #set( $by = "By ${approval.by.name}" )
         #end
     #end
 

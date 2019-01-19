@@ -63,12 +63,11 @@ public class GerritCommand {
 
     @SuppressWarnings("deprecation")
     private String getCommand(GerritChange change, String args) {
-        String sb = BASE_COMMAND + ' ' +
-                change.getNumber() + ',' + change.getPatchSet().getNumber() +
-                ' ' + args;
 
         // TODO: escape args? Or build manually with String reviewType,int reviewScore,etc..?
-        return sb;
+        return BASE_COMMAND + ' ' +
+                change.getNumber() + ',' + change.getPatchSet().getNumber() +
+                ' ' + args;
     }
 
     private boolean runCommands(String[] commands) throws IOException {
@@ -128,7 +127,7 @@ public class GerritCommand {
         return auth;
     }
 
-    private boolean runCommand(SshConnection ssh, String command) throws SshException, IOException {
+    private boolean runCommand(SshConnection ssh, String command) throws IOException {
         boolean success = false;
         ChannelExec channel = null;
 

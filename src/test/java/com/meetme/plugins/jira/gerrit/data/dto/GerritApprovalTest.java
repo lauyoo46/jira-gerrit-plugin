@@ -13,11 +13,7 @@
  */
 package com.meetme.plugins.jira.gerrit.data.dto;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import net.sf.json.JSONObject;
 
@@ -164,10 +160,10 @@ public class GerritApprovalTest {
         GerritApproval obj2 = new GerritApproval(BASE_TEST);
 
         assertEquals(0, obj.compareTo(obj));
-        assertTrue(obj.equals(obj));
+        assertEquals(obj, obj);
 
         assertEquals(0, obj.compareTo(obj2));
-        assertTrue(obj.equals(obj2));
+        assertEquals(obj, obj2);
     }
 
     @Test
@@ -178,10 +174,10 @@ public class GerritApprovalTest {
 
         // obj1 < obj2
         assertEquals(-1, obj.compareTo(obj2));
-        assertFalse(obj.equals(obj2));
+        assertNotEquals(obj, obj2);
 
         // obj1 > obj2
         assertEquals(1, obj2.compareTo(obj));
-        assertFalse(obj2.equals(obj));
+        assertNotEquals(obj2, obj);
     }
 }

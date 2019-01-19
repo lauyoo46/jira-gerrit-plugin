@@ -186,7 +186,10 @@ public class GerritConfigurationImpl implements GerritConfiguration {
     public boolean getUseGerritProjectWhitelist() {
         String useGerritProjectWhitelist = (String) settings.get(FIELD_USE_GERRIT_PROJECT_WHITELIST);
         // Defaults to the behavior without whitelist:
-        return useGerritProjectWhitelist != null && "true".equals(useGerritProjectWhitelist);
+        if (useGerritProjectWhitelist == null || useGerritProjectWhitelist.isEmpty()){
+            return false;
+        }
+        return "true".equals(useGerritProjectWhitelist);
     }
 
     @Override

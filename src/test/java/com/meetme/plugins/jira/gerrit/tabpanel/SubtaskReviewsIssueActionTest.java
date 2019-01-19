@@ -28,12 +28,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.atlassian.core.util.collection.EasyList;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.plugin.issuetabpanel.IssueTabPanelModuleDescriptor;
 import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
@@ -118,7 +118,7 @@ public class SubtaskReviewsIssueActionTest {
     @Test
     public void testPopulateVelocityParamsMap() {
         Map<String, Object> params = new HashMap<>();
-        List changes = EasyList.build(change1, change2);
+        List changes = Lists.newArrayList(change1, change2);
 
         @SuppressWarnings("unchecked")
         SubtaskReviewsIssueAction obj = new SubtaskReviewsIssueAction(descriptor, subtask, changes);
