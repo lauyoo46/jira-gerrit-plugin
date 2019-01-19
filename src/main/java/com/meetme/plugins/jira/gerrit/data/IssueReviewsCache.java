@@ -34,6 +34,8 @@ class IssueReviewsCache {
         return lruCache;
     }
 
+    public static void clearCache(){ lruCache.clear();}
+
     private static class TimedCache extends LinkedHashMap<String, List<GerritChange>> {
         private static final long serialVersionUID = 296909003142207307L;
 
@@ -102,6 +104,14 @@ class IssueReviewsCache {
         public List<GerritChange> remove(Object key) {
             timestamps.remove(key);
             return super.remove(key);
+        }
+
+        /**
+         * Clean all values from maps
+         */
+        @Override
+        public void clear(){
+            super.clear();
         }
     }
 }
