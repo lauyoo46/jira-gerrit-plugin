@@ -148,13 +148,13 @@ public class GerritConfigurationImpl implements GerritConfiguration {
 
     @Override
     public long getCacheTimeout() {
-        String timeout = (String) settings.get(FIELD_SSH_TIMEOUT);
+        String timeout = (String) settings.get(FIELD_CACHE_TIMEOUT);
         return timeout == null ? DEFAULT_CACHE_TIMEOUT : Integer.parseInt(timeout);
     }
 
     @Override
-    public void setCacheTimeout(long connectionTimeout) {
-        settings.put(FIELD_CACHE_TIMEOUT, connectionTimeout < 0 ? DEFAULT_CACHE_TIMEOUT : Long.toString(connectionTimeout));
+    public void setCacheTimeout(long cacheTimeout) {
+        settings.put(FIELD_CACHE_TIMEOUT, cacheTimeout < 0 ? DEFAULT_CACHE_TIMEOUT : Long.toString(cacheTimeout));
     }
 
 

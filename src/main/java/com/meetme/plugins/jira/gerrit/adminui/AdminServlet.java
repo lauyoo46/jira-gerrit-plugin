@@ -120,7 +120,7 @@ public class AdminServlet extends HttpServlet {
         map.put(GerritConfiguration.FIELD_KNOWN_GERRIT_PROJECTS, projectsUsingGerrit);
         map.put(GerritConfiguration.FIELD_USE_GERRIT_PROJECT_WHITELIST, String.valueOf(config
                 .getUseGerritProjectWhitelist()));
-        map.put(GerritConfiguration.FIELD_CACHE_TIMEOUT, config.getConnectionTimeout());
+        map.put(GerritConfiguration.FIELD_CACHE_TIMEOUT, config.getCacheTimeout());
         return map;
     }
 
@@ -255,6 +255,9 @@ public class AdminServlet extends HttpServlet {
                     break;
                 case GerritConfiguration.FIELD_KNOWN_GERRIT_PROJECTS:
                     idsOfSelectedGerritProjects.add(item.getString());
+                    break;
+                case GerritConfiguration.FIELD_CACHE_TIMEOUT:
+                    configurationManager.setCacheTimeout(Integer.parseInt(item.getString()));
                     break;
             }
         }
