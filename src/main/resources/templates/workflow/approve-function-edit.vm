@@ -20,6 +20,6 @@
     <td bgcolor="#ffffff" nowrap="">
         <input type="text" name="cmdArgs" value="$cmdArgs" />
         <br />
-        <font size="1">$i18n.getText("gerrit.workflow.approve.edit.cmdArgs.description")</font>
+        <span style="font-size: xx-small; ">${i18n.getText("gerrit.workflow.approve.edit.cmdArgs.description")}</span>
     </td>
 </tr>

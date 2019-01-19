@@ -155,11 +155,11 @@
             <div class="field-group" id="gerritProjectDiv"
                 #if ($!useGerritProjectWhitelist == "false") style="display:none;" #end
                 >
-                <label for="projectsUsingGerrit">$i18n.getText("gerrit.admin.project.whitelist")</label>
+                <label for="projectsUsingGerrit">${i18n.getText("gerrit.admin.project.whitelist")}</label>
                 <select id="allProjects" name="knownGerritProjects" multiple="">
                     #foreach ($project in $allProjects)
                         <option value="$project.id"
-                            #if ($knownGerritProjects.isEmpty() == false && $knownGerritProjects.contains($project))
+                            #if (${knownGerritProjects.isEmpty()} == false && $knownGerritProjects.contains($project))
                                 selected="selected"
                             #end title="$project.id">$project.name
                         </option>

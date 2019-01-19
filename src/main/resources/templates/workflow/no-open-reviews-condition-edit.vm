@@ -34,7 +34,7 @@
                 #option( "true" $isSelected $i18n.getText("gerrit.workflow.no-open-reviews.edit.reversed-true") )
             </select>
             <br />
-            <font size="1">$i18n.getText("gerrit.workflow.no-open-reviews.edit.description")</font>
+            <span style="font-size: xx-small; ">${i18n.getText("gerrit.workflow.no-open-reviews.edit.description")}</span>
         </td>
     </tr>
 </tbody>
