@@ -12,7 +12,7 @@ import static com.meetme.plugins.jira.gerrit.data.GerritConfiguration.DEFAULT_CA
 /**
  * Created by jhansche on 9/2/16.
  */
-public class IssueReviewsCache {
+class IssueReviewsCache {
     /** Max number of items to retain in the cache */
     private static final int CACHE_CAPACITY = 30;
 
@@ -55,12 +55,12 @@ public class IssueReviewsCache {
          * @return whether the associated value exists and has expired
          */
         private boolean hasKeyExpired(Object key) {
-            if (timestamps.containsKey(key)) {
-                Long lastUpdatedTimestamp = timestamps.get(key);
-                return lastUpdatedTimestamp <= System.currentTimeMillis() - expiration;
+            if (!timestamps.containsKey(key)) {
+                return false;
             }
+            Long lastUpdatedTimestamp = timestamps.get(key);
+            return lastUpdatedTimestamp <= System.currentTimeMillis() - expiration;
 
-            return false;
         }
 
         @Override
