@@ -81,7 +81,6 @@ public class IssueReviewsImpl implements IssueReviewsManager {
         List<GerritChange> changes;
 
         if (!configuration.isSshValid()) {
-            // return Collections.emptyList();
             throw new GerritConfiguration.NotConfiguredException("Not configured for SSH access");
         }
 
