@@ -147,12 +147,12 @@ public class ApprovalScore extends AbstractJiraCondition {
      *
      * @author Joe Hansche
      */
-    public static enum ComparisonOperator {
+    public enum ComparisonOperator {
         LESS_THAN("<"), LESS_OR_EQUAL("<="), EQUAL_TO("=="), GREATER_OR_EQUAL(">="), GREATER_THAN(">");
 
         private final String display;
 
-        private ComparisonOperator(final String display) {
+        ComparisonOperator(final String display) {
             this.display = display;
         }
 

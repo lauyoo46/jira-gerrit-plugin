@@ -96,8 +96,8 @@ public class IssueStatusOptionsProvider implements WebItemProvider {
     }
 
     static boolean isIssueOpen(Issue issue) {
-        log.debug("Checking if " + issue.getKey() + " is open: " + issue.getResolutionObject());
-        return issue.getResolutionObject() == null;
+        log.debug("Checking if " + issue.getKey() + " is open: " + issue.getResolution());
+        return issue.getResolution() == null;
     }
 
     static boolean wantsUnresolved(final String gerritIssueStatus) {

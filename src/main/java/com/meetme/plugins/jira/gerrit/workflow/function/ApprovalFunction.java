@@ -103,7 +103,7 @@ public class ApprovalFunction extends AbstractJiraFunctionProvider {
     }
 
     protected Preferences getUserPrefs(@SuppressWarnings("rawtypes") Map transientVars, @SuppressWarnings("rawtypes") Map args) {
-        final ApplicationUser user = getCaller(transientVars, args);
+        final ApplicationUser user = getCallerUser(transientVars, args);
         return prefsManager.getPreferences(user);
     }
 

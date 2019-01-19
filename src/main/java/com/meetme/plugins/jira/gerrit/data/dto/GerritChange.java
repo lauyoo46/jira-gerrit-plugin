@@ -31,7 +31,7 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
      * Gerrit review status enumeration, corresponding to the status string in the Gerrit change
      * payload.
      */
-    public static enum Status
+    public enum Status
     {
         NEW, SUBMITTED, DRAFT, MERGED, ABANDONED
     }
