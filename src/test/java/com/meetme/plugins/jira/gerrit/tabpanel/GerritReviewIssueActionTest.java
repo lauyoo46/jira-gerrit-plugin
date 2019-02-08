@@ -182,9 +182,9 @@ public class GerritReviewIssueActionTest {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> setUpExpectedVelocityParams() {
-        return (Map<String, Object>) ImmutableMap.of("change", (Object) change,
-                "formatLastUpdated", (Object) TEST_FORMATTED_LAST_UPDATED,
-                "isoLastUpdated", (Object) TEST_ISO_LAST_UPDATED,
-                "baseurl", (Object) BASE_URL);
+        return ImmutableMap.of("change", change,
+                "formatLastUpdated", TEST_FORMATTED_LAST_UPDATED,
+                "isoLastUpdated", TEST_ISO_LAST_UPDATED,
+                "baseurl", BASE_URL);
     }
 }
