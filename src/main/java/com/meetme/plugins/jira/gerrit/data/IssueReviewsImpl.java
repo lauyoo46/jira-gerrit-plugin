@@ -20,6 +20,7 @@ import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandler;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandlerWithPersistedConnection;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.Authentication;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.SshException;
 
@@ -28,6 +29,7 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +44,10 @@ public class IssueReviewsImpl implements IssueReviewsManager {
     private GerritConfiguration configuration;
 
     private IssueManager jiraIssueManager;
+
+    private GerritQueryHandlerWithPersistedConnection queryHandler;
+
+    private QueryHandlerConfig queryHandlerConfig;
 
     public IssueReviewsImpl(GerritConfiguration configuration, IssueManager jiraIssueManager) {
         this.configuration = configuration;
@@ -84,11 +90,10 @@ public class IssueReviewsImpl implements IssueReviewsManager {
             throw new GerritConfiguration.NotConfiguredException("Not configured for SSH access");
         }
 
-        Authentication auth = new Authentication(configuration.getSshPrivateKey(), configuration.getSshUsername());
-        GerritQueryHandler query = new GerritQueryHandler(configuration.getSshHostname(), configuration.getSshPort(), null, auth, configuration.getConnectionTimeout());
         List<JSONObject> reviews;
 
         try {
+            GerritQueryHandler query = getQueryHandler(configuration);
             reviews = query.queryJava(searchQuery, false, true, false);
         } catch (SshException e) {
             throw new GerritQueryException("An ssh error occurred while querying for reviews.", e);
@@ -115,6 +120,26 @@ public class IssueReviewsImpl implements IssueReviewsManager {
         return changes;
     }
 
+    private GerritQueryHandler getQueryHandler(GerritConfiguration configuration) {
+        QueryHandlerConfig config = new QueryHandlerConfig(configuration.getSshPrivateKey(),
+                configuration.getSshUsername(), configuration.getSshHostname(),
+                configuration.getSshPort(), configuration.getConnectionTimeout());
+        boolean configChanged = !config.equals(queryHandlerConfig);
+
+        if (queryHandler == null || configChanged) {
+            if (queryHandler != null) {
+                log.debug("QueryHandler configuration has changed, creating a fresh connection.");
+                queryHandler.disconnect();
+            }
+            Authentication auth = new Authentication(configuration.getSshPrivateKey(), configuration.getSshUsername());
+            queryHandler = new GerritQueryHandlerWithPersistedConnection(configuration.getSshHostname(), configuration.getSshPort(),
+                    null, auth, configuration.getConnectionTimeout());
+            queryHandlerConfig = config;
+            log.debug("QueryHandler with a fresh SSH connection was created.");
+        }
+        return queryHandler;
+    }
+
     @Override
     public boolean doApprovals(Issue issue, List<GerritChange> changes, String args, ExtendedPreferences prefs) throws IOException {
         Set<String> issueKeys = getIssueKeys(issue);
@@ -135,5 +160,46 @@ public class IssueReviewsImpl implements IssueReviewsManager {
         }
 
         return result;
+    }
+
+    private static class QueryHandlerConfig {
+        File currentSshPrivateKey;
+        String currentSshUsername;
+        String currentSshHostname;
+        int currentSshPort;
+        int currentConnectionTimeout;
+
+        QueryHandlerConfig(File currentSshPrivateKey, String currentSshUsername, String currentSshHostname,
+                           int currentSshPort, int currentConnectionTimeout) {
+            this.currentSshPrivateKey = currentSshPrivateKey;
+            this.currentSshUsername = currentSshUsername;
+            this.currentSshHostname = currentSshHostname;
+            this.currentSshPort = currentSshPort;
+            this.currentConnectionTimeout = currentConnectionTimeout;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            QueryHandlerConfig that = (QueryHandlerConfig) o;
+
+            if (currentSshPort != that.currentSshPort) return false;
+            if (currentConnectionTimeout != that.currentConnectionTimeout) return false;
+            if (!currentSshPrivateKey.equals(that.currentSshPrivateKey)) return false;
+            if (!currentSshUsername.equals(that.currentSshUsername)) return false;
+            return currentSshHostname.equals(that.currentSshHostname);
+        }
+
+        // we don't care about hashcode
+        @Override
+        public int hashCode() {
+            return 0;
+        }
     }
 }
