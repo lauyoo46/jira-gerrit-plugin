@@ -61,7 +61,7 @@
                 #option("GREATER_THAN" $isSelected "&gt;")
             </select>
             <br />
-            <font size="1">${i18n.getText("gerrit.workflow.score-condition.edit.comparison.description")}</font>
+            <span style="font-size: xx-small; ">${i18n.getText("gerrit.workflow.score-condition.edit.comparison.description")}</span>
         </td>
     </tr>
 
@@ -72,7 +72,7 @@
         <td bgcolor="#ffffff" nowrap="nowrap">
             <input type="text" name="label" value="$label" />
             <br />
-            <font size="1">${i18n.getText("gerrit.workflow.score-condition.edit.approval-category.description")}</font>
+            <span style="font-size: xx-small; ">${i18n.getText("gerrit.workflow.score-condition.edit.approval-category.description")}</span>
         </td>
     </tr>
 
@@ -83,7 +83,7 @@
         <td bgcolor="#ffffff" nowrap="nowrap">
             <input type="text" name="target" value="$target" />
             <br />
-            <font size="1">${i18n.getText("gerrit.workflow.score-condition.edit.target-score.description")}</font>
+            <span style="font-size: xx-small; ">${i18n.getText("gerrit.workflow.score-condition.edit.target-score.description")}</span>
         </td>
     </tr>
     <tbody>
