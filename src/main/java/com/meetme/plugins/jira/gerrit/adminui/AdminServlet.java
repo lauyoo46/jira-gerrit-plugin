@@ -61,6 +61,7 @@ public class AdminServlet extends HttpServlet {
     private static final String FIELD_ACTION = "action";
     private static final String ACTION_SAVE = "save";
     private static final String ACTION_TEST = "test";
+    private static final String ACTION_CLEAR_CACHE = "clear-cache";
 
     private static String TEMPLATE_ADMIN = "templates/admin.vm";
 
@@ -184,6 +185,9 @@ public class AdminServlet extends HttpServlet {
         if (ACTION_TEST.equals(action)) {
             performConnectionTest(configurationManager, map);
         }
+        if (ACTION_CLEAR_CACHE.equalsIgnoreCase(action)){
+
+        }
 
         return map;
     }
@@ -207,6 +211,11 @@ public class AdminServlet extends HttpServlet {
             map.put("testError", e.getMessage());
         }
     }
+
+    private void performClearCache(){
+
+    }
+
 
     private String getAction(List<FileItem> items) {
         for (FileItem item : items) {
