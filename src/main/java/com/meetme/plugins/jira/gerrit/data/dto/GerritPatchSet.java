@@ -68,10 +68,9 @@ public class GerritPatchSet extends PatchSet {
 
         for (GerritApproval approval : approvals) {
             String type = approval.getType();
-
             l = map.computeIfAbsent(type, k -> new ArrayList<>());
-
             l.add(approval);
+            map.put(type, l);
         }
 
         return map;
