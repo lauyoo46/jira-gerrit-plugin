@@ -24,6 +24,7 @@ import com.sonyericsson.hudson.plugins.gerrit.gerritevents.GerritQueryException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 public class SubtaskReviewsTabPanel extends AbstractIssueTabPanel2 implements IssueTabPanel2 {
@@ -63,8 +64,9 @@ public class SubtaskReviewsTabPanel extends AbstractIssueTabPanel2 implements Is
             Collection<Issue> subtasks = request.issue().getSubTaskObjects();
             show = subtasks != null && subtasks.size() > 0;
 
-            if (configuration.getUseGerritProjectWhitelist() && ! isGerritProject(request.issue()))
+            if (configuration.getUseGerritProjectWhitelist() && !isGerritProject(request.issue())) {
                 show = false;
+            }
         }
 
         return ShowPanelReply.create(show);

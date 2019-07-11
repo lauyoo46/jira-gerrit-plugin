@@ -101,7 +101,7 @@ public class GerritReviewsTabPanel extends AbstractIssueTabPanel2 implements Iss
             isShowing = false;
         }
 
-        if (configuration.getUseGerritProjectWhitelist() && ! isGerritProject(arg0.issue())) {
+        if (configuration.getUseGerritProjectWhitelist() && !isGerritProject(arg0.issue())) {
             isShowing = false;
         }
 
