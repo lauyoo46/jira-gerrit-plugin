@@ -46,7 +46,7 @@ public class GerritReviewsIssueAgilePanel extends AbstractJiraContextProvider {
 		try {
 			List<GerritChange> changes = reviewsManager.getReviewsForIssue(currentIssue);
 			contextMap.put(KEY_CHANGES, changes);
-			contextMap.put("atl.gh.issue.details.tab.count", (long) changes.size());
+			contextMap.put("atl.gh.issue.details.tab.count", changes.size());
 		} catch (GerritQueryException e) {
 			contextMap.put(KEY_ERROR, e.getMessage());
 		}
