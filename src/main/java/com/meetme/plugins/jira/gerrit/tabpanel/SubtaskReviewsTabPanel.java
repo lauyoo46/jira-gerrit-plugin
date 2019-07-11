@@ -82,9 +82,9 @@ public class SubtaskReviewsTabPanel extends AbstractIssueTabPanel2 implements Is
     }
 
     private boolean isGerritProject(final Issue issue) {
-        if (issue.getProjectId() == null)
+        if (issue.getProjectId() == null) {
             return false;
-
+        }
         return !isEmpty(configuration.getIdsOfKnownGerritProjects()) &&
                 configuration.getIdsOfKnownGerritProjects().contains(issue.getProjectId().toString());
     }
