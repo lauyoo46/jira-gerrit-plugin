@@ -1,9 +1,11 @@
-work
-target
-bin
-.DS_Store
+work/
+target/
+bin/
+
 #IDE specific files
 .project
 .classpath
 .idea
 *.iml
+
+.DS_Store
