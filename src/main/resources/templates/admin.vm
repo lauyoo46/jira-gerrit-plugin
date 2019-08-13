@@ -59,9 +59,7 @@
                         </td>
                         <td><input style="width:40px; height:20px; margin-left:20px" type="radio" id="connectionTypeSSH" name="connectionType" class="text" value="ssh"
                              #if ($!connectionType == "ssh") checked="checked" #end
-                             onchange=" var connectionData = [ document.getElementById ];
-
-                                       if(document.getElementById('testSshSuccess') !== null) {
+                             onchange="if(document.getElementById('testSshSuccess') !== null) {
                                            document.getElementById('testSshSuccess').style.display='none';
                                        }
                                        if(document.getElementById('testSshFail') !== null) {
