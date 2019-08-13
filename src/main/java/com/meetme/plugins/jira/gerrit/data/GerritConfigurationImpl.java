@@ -41,6 +41,16 @@ public class GerritConfigurationImpl implements GerritConfiguration {
     }
 
     @Override
+    public String getConnectionType() {
+        return (String) settings.get(FIELD_CONNECTION_TYPE);
+    }
+
+    @Override
+    public void setConnectionType(String connectionType) {
+        settings.put(FIELD_CONNECTION_TYPE, connectionType);
+    }
+
+    @Override
     public URI getHttpBaseUrl() {
         String uri = (String) settings.get(FIELD_HTTP_BASE_URL);
         return uri == null ? null : URI.create(uri);
@@ -176,6 +186,13 @@ public class GerritConfigurationImpl implements GerritConfiguration {
                 && !Strings.isNullOrEmpty(getSshUsername())
                 && getSshPrivateKey() != null
                 && getSshPrivateKey().exists();
+    }
+
+    @Override
+    public boolean isHttpValid() {
+        boolean username = Strings.isNullOrEmpty(getHttpUsername());
+        boolean password = Strings.isNullOrEmpty(getHttpPassword());
+        return (username && password) || (!username && !password);
     }
 
     @Override

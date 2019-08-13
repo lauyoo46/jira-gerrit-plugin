@@ -13,12 +13,17 @@
  */
 package com.meetme.plugins.jira.gerrit.data.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sonymobile.tools.gerrit.gerritevents.GerritJsonEventFactory;
+import com.sonymobile.tools.gerrit.gerritevents.dto.GerritChangeKind;
 import com.sonymobile.tools.gerrit.gerritevents.dto.GerritEventKeys;
+import com.sonymobile.tools.gerrit.gerritevents.dto.attr.Account;
 import com.sonymobile.tools.gerrit.gerritevents.dto.attr.PatchSet;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -40,11 +45,65 @@ public class GerritPatchSet extends PatchSet {
         super(json);
     }
 
+    public GerritPatchSet(JSONObject json, String connectionType) {
+        if(connectionType.equals("ssh")) {
+            this.fromJsonSSH(json);
+        }
+        else {
+            this.fromJsonHTTP(json);
+        }
+    }
+
     @Override
     public void fromJson(JSONObject json) {
         log.debug("GerritPatchSet from json: " + json.toString(4, 0));
         super.fromJson(json);
+        this.fromJsonSSH(json);
+    }
 
+    private void fromJsonSSH(JSONObject json) {
+        log.debug("GerritPatchSet from json SSH: " + json.toString(4, 0));
+
+        super.fromJson(json);
+        if (json.containsKey(GerritEventKeys.APPROVALS)) {
+            JSONArray eventApprovals = json.getJSONArray(GerritEventKeys.APPROVALS);
+            approvals = new ArrayList<>(eventApprovals.size());
+
+            for (int i = 0; i < eventApprovals.size(); i++) {
+                GerritApproval approval = new GerritApproval(eventApprovals.getJSONObject(i));
+                approvals.add(approval);
+            }
+        } else {
+            log.warn("GerritPatchSet contains no approvals key.");
+        }
+
+    }
+
+    private void fromJsonHTTP(JSONObject json) {
+        log.debug("GerritPatchSet from json HTTP: " + json.toString(4, 0));
+
+        String revision = GerritJsonEventFactory.getString(json, "current_revision");
+        JSONObject jsonRevision = json.getJSONObject("revisions").getJSONObject(revision);
+        this.setNumber(GerritJsonEventFactory.getString(jsonRevision, "_number"));
+        this.setRevision(revision);
+        this.setDraft(GerritJsonEventFactory.getBoolean(jsonRevision, "isDraft"));
+
+        String dateCreated = jsonRevision.getString("created");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            this.setCreatedOn(sdf.parse(dateCreated));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (jsonRevision.containsKey("kind")) {
+            this.setKind(GerritChangeKind.fromString(GerritJsonEventFactory.getString(jsonRevision, "kind")));
+        }
+        this.setRef(GerritJsonEventFactory.getString(jsonRevision, "ref"));
+        if (jsonRevision.containsKey("uploader")) {
+            this.setUploader(new Account(jsonRevision.getJSONObject("uploader")));
+        }
+
+        //TODO extract method
         if (json.containsKey(GerritEventKeys.APPROVALS)) {
             JSONArray eventApprovals = json.getJSONArray(GerritEventKeys.APPROVALS);
             approvals = new ArrayList<>(eventApprovals.size());

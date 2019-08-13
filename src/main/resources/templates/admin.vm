@@ -25,19 +25,107 @@
         <form id="admin" class="aui" enctype="multipart/form-data" method="post" action="">
             <h2>$i18n.getText("gerrit.admin.label")</h2>
 
-            #if ($!testResult == "true")
-                <div class="aui-message aui-message-success">
+            #if ($!testResultSsh == "true")
+                <div id="testSshSuccess" class="aui-message aui-message-success">
                     <div><b>Success!</b></div>
-                    <div>The connection to Gerrit was successful.</div>
+                    <div>The SSH connection to Gerrit was successful.</div>
                 </div>
-            #elseif ($!testResult == "false")
-                <div class="aui-message aui-message-error">
+            #elseif ($!testResultSsh == "false")
+                <div id="testSshFail" class="aui-message aui-message-error">
                     <div><b>Connection Failed!</b></div>
-                    <div>An error occurred while testing the connection to Gerrit.</div>
-                    <blockquote>$!testError</blockquote>
+                    <div>An error occurred while testing the SSH connection to Gerrit.</div>
+                    <blockquote>$!testErrorSsh</blockquote>
                 </div>
             #end
+            #if ($!testResultHttp == "true")
+                <div id="testHttpSuccess" class="aui-message aui-message-success">
+                    <div><b>Success!</b></div>
+                    <div>The HTTP connection to Gerrit was successful.</div>
+                </div>
+            #elseif ($!testResultHttp == "false")
+                <div id="testHttpFail" class="aui-message aui-message-error">
+                    <div><b>Connection Failed!</b></div>
+                    <div>An error occurred while testing the HTTP connection to Gerrit.</div>
+                    <blockquote>$!testErrorHttp</blockquote>
+                </div>
+            #end
+            <div>
+                <table style="height:100px">
+                    <tr>
+                        <td>
+                            <label for="connectionType" style="width:200px">
+                            $i18n.getText("gerrit.admin.connectionType.label"):
+                            </label>
+                        </td>
+                        <td><input style="width:40px; height:20px; margin-left:20px" type="radio" id="connectionTypeSSH" name="connectionType" class="text" value="ssh"
+                             #if ($!connectionType == "ssh") checked="checked" #end
+                             onchange=" var connectionData = [ document.getElementById ];
 
+                                       if(document.getElementById('testSshSuccess') !== null) {
+                                           document.getElementById('testSshSuccess').style.display='none';
+                                       }
+                                       if(document.getElementById('testSshFail') !== null) {
+                                           document.getElementById('testSshFail').style.display='none';
+                                       }
+                                       if(document.getElementById('testHttpSuccess') !== null) {
+                                           document.getElementById('testHttpSuccess').style.display='none';
+                                       }
+                                       if(document.getElementById('testHttpFail') !== null) {
+                                           document.getElementById('testHttpFail').style.display='none';
+                                       }
+                                       if (document.getElementById('connectionTypeSSH').checked)
+                                       {
+                                           document.getElementById('httpData').style.display='none';
+                                           document.getElementById('sshData').style.display='';
+                                           document.getElementById('testHttp').style.display='none';
+                                           document.getElementById('testSsh').style.display='';
+                                       }
+                                       else
+                                       {
+                                           document.getElementById('httpData').style.display='';
+                                           document.getElementById('sshData').style.display='none';
+                                           document.getElementById('testHttp').style.display='';
+                                           document.getElementById('testSsh').style.display='none';
+                                       }"
+                             ><label style="margin-right:20px">SSH
+                              </label></td>
+                        <td><input style="width:40px; height:20px" type="radio" id="connectionTypeHTTP" name="connectionType" class="text" value="http"
+                             #if ($!connectionType == "http") checked="checked" #end
+                             onchange="if(document.getElementById('testSshSuccess') !== null) {
+                                           document.getElementById('testSshSuccess').style.display='none';
+                                       }
+                                       if(document.getElementById('testSshFail') !== null) {
+                                           document.getElementById('testSshFail').style.display='none';
+                                       }
+                                       if(document.getElementById('testHttpSuccess') !== null) {
+                                           document.getElementById('testHttpSuccess').style.display='none';
+                                       }
+                                       if(document.getElementById('testHttpFail') !== null) {
+                                           document.getElementById('testHttpFail').style.display='none';
+                                       }
+                                       if (document.getElementById('connectionTypeHTTP').checked)
+                                       {
+                                           document.getElementById('httpData').style.display='';
+                                           document.getElementById('sshData').style.display='none';
+                                           document.getElementById('testHttp').style.display='';
+                                           document.getElementById('testSsh').style.display='none';
+                                       }
+                                       else
+                                       {
+                                           document.getElementById('httpData').style.display='none';
+                                           document.getElementById('sshData').style.display='';
+                                           document.getElementById('testHttp').style.display='none';
+                                           document.getElementById('testSsh').style.display='';
+                                       }"
+                             ><label style="margin-right:20px">HTTP
+                             </label></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="sshData"
+            #if ($!connectionType == "http") style="display:none;" #end
+            >
             <h3>$i18n.getText("gerrit.admin.ssh.label")</h3>
             <div class="field-group">
                 <label for="sshHostname">
@@ -92,13 +180,17 @@
                 </div>
                 #end
             </div>
+            </div>
 
             <!-- This is not yet implemented: for JSON-RPC access -->
+            <div id="httpData"
+            #if ($!connectionType == "ssh") style="display:none;" #end
+            >
             <h3>$i18n.getText("gerrit.admin.http.label")</h3>
-
             <div class="field-group">
                 <label for="httpBaseUrl">
                     $i18n.getText("gerrit.admin.httpBaseUrl.label")
+                    <span class="aui-icon icon-required"></span>
                 </label>
                 <input type="text" id="httpBaseUrl" name="httpBaseUrl" class="text" value="$!httpBaseUrl" />
                 <div class="description">$i18n.getText("gerrit.admin.httpBaseUrl.description")</div>
@@ -115,6 +207,8 @@
                     $i18n.getText("gerrit.admin.httpPassword.label")
                 </label>
                 <input type="password" id="httpPassword" name="httpPassword" class="text" value="$!httpPassword" />
+                <div class="description">$i18n.getText("gerrit.admin.httpPassword.description")</div>
+            </div>
             </div>
 
             #*
@@ -124,7 +218,8 @@
 
             <h3>$i18n.getText("gerrit.admin.search.label")</h3>
             <div class="field-group">
-                <label for="issueSearchQuery">$i18n.getText("gerrit.admin.issueSearchQuery.label")</label>
+                <label for="issueSearchQuery">$i18n.getText("gerrit.admin.issueSearchQuery.label")
+                <span class="aui-icon icon-required"></span></label>
                 <input type="text" id="issueSearchQuery" name="issueSearchQuery" class="text" value="$!issueSearchQuery" />
                 <div class="description">$i18n.getText("gerrit.admin.issueSearchQuery.description")</div>
             </div>
@@ -181,7 +276,12 @@
             <div class="buttons-container">
                 <div class="buttons">
                     <button type="submit" name="action" value="save" class="button submit">Save</button>
-                    <button type="submit" name="action" value="test" class="button submit">Test Config</button>
+                    <button id="testSsh" type="submit" name="action" value="testSsh" class="button submit"
+                    #if ($!connectionType == "http") style="display:none;" #end
+                    >Test SSH Config</button>
+                    <button id="testHttp" type="submit" name="action" value="testHttp" class="button submit"
+                    #if ($!connectionType == "ssh") style="display:none;" #end
+                    > Test HTTP Config</button>
 
                     #*
                      * Clear cache button?
