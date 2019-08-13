@@ -178,7 +178,7 @@ public class SubtaskReviewsTabPanelTest {
      * Configuration is not ready if certain conditions are not met.
      */
     @Test
-    public void testConfigurationNotReady() {
+    public void testConfigurationSshNotReady() {
         SubtaskReviewsTabPanel obj = new SubtaskReviewsTabPanel(null, null);
         // False because configuration == null
         assertFalse(obj.showPanel(issue, user));
@@ -200,6 +200,20 @@ public class SubtaskReviewsTabPanelTest {
 
         // Hostname is null
         when(configuration.getSshHostname()).thenReturn(null);
+        assertFalse(obj.showPanel(issue, user));
+    }
+
+    @Test
+    public void testConfigurationHttpNotReady() {
+        SubtaskReviewsTabPanel obj = new SubtaskReviewsTabPanel(null, null);
+        // False because configuration == null
+        assertFalse(obj.showPanel(issue, user));
+
+        // Now setup the normal mock configuration
+        obj = new SubtaskReviewsTabPanel(configuration, null);
+
+        // URL is null
+        when(configuration.getHttpBaseUrl()).thenReturn(null);
         assertFalse(obj.showPanel(issue, user));
     }
 

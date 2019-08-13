@@ -27,6 +27,8 @@ public interface GerritConfiguration {
     String DEFAULT_QUERY_PROJECT = "message:%s-*";
     int DEFAULT_SSH_TIMEOUT = 0;
 
+    String FIELD_CONNECTION_TYPE = "connectionType";
+
     String FIELD_SSH_HOSTNAME = "sshHostname";
     String FIELD_SSH_USERNAME = "sshUsername";
     String FIELD_SSH_PORT = "sshPort";
@@ -46,6 +48,8 @@ public interface GerritConfiguration {
 
     long DEFAULT_CACHE_TIMEOUT = 30000;
     String FIELD_CACHE_TIMEOUT = "cacheTimeout";
+
+    String getConnectionType();
 
     URI getHttpBaseUrl();
 
@@ -70,6 +74,8 @@ public interface GerritConfiguration {
     int getConnectionTimeout();
 
     long getCacheTimeout();
+
+    void setConnectionType(String connectionType);
 
     void setHttpBaseUrl(String httpBaseUrl);
 
@@ -96,6 +102,8 @@ public interface GerritConfiguration {
     void setCacheTimeout(long cacheTimeout);
 
     boolean isSshValid();
+
+    boolean isHttpValid();
 
     boolean isGerritProject(final Issue issue);
 

@@ -25,6 +25,8 @@ import com.google.common.collect.Sets;
 import com.meetme.plugins.jira.gerrit.data.GerritConfiguration;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandler;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandlerHttp;
+import com.sonymobile.tools.gerrit.gerritevents.http.HttpAuthentication;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.Authentication;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -60,7 +62,8 @@ public class AdminServlet extends HttpServlet {
 
     private static final String FIELD_ACTION = "action";
     private static final String ACTION_SAVE = "save";
-    private static final String ACTION_TEST = "test";
+    private static final String ACTION_TEST_SSH = "testSsh";
+    private static final String ACTION_TEST_HTTP = "testHttp";
 
     private static String TEMPLATE_ADMIN = "templates/admin.vm";
 
@@ -96,6 +99,8 @@ public class AdminServlet extends HttpServlet {
 
     private Map<String, Object> configToMap(final GerritConfiguration config) {
         Map<String, Object> map = new HashMap<>();
+
+        map.put(GerritConfiguration.FIELD_CONNECTION_TYPE, config.getConnectionType());
 
         map.put(GerritConfiguration.FIELD_SSH_HOSTNAME, config.getSshHostname());
         map.put(GerritConfiguration.FIELD_SSH_PORT, config.getSshPort());
@@ -181,18 +186,21 @@ public class AdminServlet extends HttpServlet {
         Map<String, Object> map = configToMap(configurationManager);
         String action = getAction(items);
 
-        if (ACTION_TEST.equals(action)) {
-            performConnectionTest(configurationManager, map);
+        if (ACTION_TEST_SSH.equals(action)) {
+            performSshConnectionTest(configurationManager, map);
         }
 
+        if (ACTION_TEST_HTTP.equals(action)) {
+            performHTTPConnectionTest(configurationManager, map);
+        }
         return map;
     }
 
-    private void performConnectionTest(GerritConfiguration configuration, Map<String, Object> map) {
-        map.put("testResult", Boolean.FALSE);
+    private void performSshConnectionTest(GerritConfiguration configuration, Map<String, Object> map) {
+        map.put("testResultSsh", Boolean.FALSE);
 
         if (!configuration.isSshValid()) {
-            map.put("testError", "not configured");
+            map.put("testErrorSsh", "not configured");
             return;
         }
 
@@ -201,10 +209,31 @@ public class AdminServlet extends HttpServlet {
 
         try {
             query.queryJava("limit:1", false, false, false);
-            map.put("testResult", Boolean.TRUE);
+            map.put("testResultSsh", Boolean.TRUE);
         } catch (IOException | GerritQueryException e) {
-            e.printStackTrace();
-            map.put("testError", e.getMessage());
+            log.error("Error testing ....", e);
+            map.put("testErrorSsh", e.getMessage());
+        }
+    }
+
+    private void performHTTPConnectionTest(GerritConfiguration configuration, Map<String, Object> map) {
+        map.put("testResultHttp", Boolean.FALSE);
+
+        if(!configuration.isHttpValid()) {
+            String invalidField = configuration.getHttpUsername().equals("") ? "username" : "password";
+            map.put("testErrorHttp", invalidField + " not configured");
+            return;
+        }
+
+        HttpAuthentication auth = new HttpAuthentication(configuration.getHttpUsername(), configuration.getHttpPassword());
+        GerritQueryHandlerHttp query = new GerritQueryHandlerHttp(configuration.getHttpBaseUrl().toString(), auth);
+
+        try {
+            query.queryJava("limit:1");
+            map.put("testResultHttp", Boolean.TRUE);
+        } catch (GerritQueryException | IOException e) {
+            log.error("Error testing ....", e);
+            map.put("testErrorHttp", e.getMessage());
         }
     }
 
@@ -226,6 +255,8 @@ public class AdminServlet extends HttpServlet {
             allFields.add(fieldName);
 
             switch (fieldName) {
+                case GerritConfiguration.FIELD_CONNECTION_TYPE:
+                    configurationManager.setConnectionType(item.getString());
                 case GerritConfiguration.FIELD_HTTP_BASE_URL:
                     configurationManager.setHttpBaseUrl(item.getString());
                     break;
