@@ -76,7 +76,7 @@
     <issue-tabpanel name="Gerrit Reviews Tab Panel"
             class="com.meetme.plugins.jira.gerrit.tabpanel.GerritReviewsTabPanel"
             key="gerrit-reviews-tabpanel"
-            state="enabled">
+            state="disabled">
         <description>Show Gerrit reviews related to an issue in an issue tab panel.</description>
         <label key="gerrit.tabpanel.label">Gerrit Reviews</label>
         <resource name="view" location="templates/gerrit-reviews-tabpanel-item.vm" type="velocity" />
@@ -98,7 +98,7 @@
     <issue-tabpanel name="Subtask Gerrit Reviews Tab Panel"
             class="com.meetme.plugins.jira.gerrit.tabpanel.SubtaskReviewsTabPanel"
             key="subtask-reviews-tabpanel"
-            state="enabled">
+            state="disabled">
         <description>Show Gerrit reviews related issue subtasks in the parent issue's tab panel.</description>
         <label key="gerrit.tabpanel.subtasks.label">Gerrit Subtask Reviews</label>
         <resource name="view" location="templates/subtask-reviews-tabpanel-item.vm" type="velocity" />
@@ -113,7 +113,7 @@
             i18n-name-key="gerrit-reviews-side-panel.name"
             key="gerrit-reviews-side-panel"
             location="atl.jira.view.issue.right.context"
-            state="enabled">
+            state="disabled">
         <description key="gerrit-reviews-side-panel.description">Show Gerrit reviews in the View Issue side panel</description>
         <label key="gerrit-reviews-side-panel.label">Gerrit Reviews</label>
         <context-provider class="com.meetme.plugins.jira.gerrit.webpanel.GerritReviewsIssueSidePanel" />
