@@ -197,10 +197,10 @@ public class AdminServlet extends HttpServlet {
     }
 
     private void performSshConnectionTest(GerritConfiguration configuration, Map<String, Object> map) {
-        map.put("testResultSsh", Boolean.FALSE);
+        map.put("testResultConnection", Boolean.FALSE);
 
         if (!configuration.isSshValid()) {
-            map.put("testErrorSsh", "not configured");
+            map.put("testErrorConnection", "not configured");
             return;
         }
 
@@ -209,19 +209,19 @@ public class AdminServlet extends HttpServlet {
 
         try {
             query.queryJava("limit:1", false, false, false);
-            map.put("testResultSsh", Boolean.TRUE);
+            map.put("testResultConnection", Boolean.TRUE);
         } catch (IOException | GerritQueryException e) {
             log.error("Error testing ....", e);
-            map.put("testErrorSsh", e.getMessage());
+            map.put("testErrorConnection", e.getMessage());
         }
     }
 
     private void performHTTPConnectionTest(GerritConfiguration configuration, Map<String, Object> map) {
-        map.put("testResultHttp", Boolean.FALSE);
+        map.put("testResultConnection", Boolean.FALSE);
 
         if(!configuration.isHttpValid()) {
             String invalidField = configuration.getHttpUsername().equals("") ? "username" : "password";
-            map.put("testErrorHttp", invalidField + " not configured");
+            map.put("testErrorConnection", invalidField + " not configured");
             return;
         }
 
@@ -230,10 +230,10 @@ public class AdminServlet extends HttpServlet {
 
         try {
             query.queryJava("limit:1");
-            map.put("testResultHttp", Boolean.TRUE);
+            map.put("testResultConnection", Boolean.TRUE);
         } catch (GerritQueryException | IOException e) {
             log.error("Error testing ....", e);
-            map.put("testErrorHttp", e.getMessage());
+            map.put("testErrorConnection", e.getMessage());
         }
     }
 

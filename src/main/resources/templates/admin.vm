@@ -25,28 +25,16 @@
         <form id="admin" class="aui" enctype="multipart/form-data" method="post" action="">
             <h2>$i18n.getText("gerrit.admin.label")</h2>
 
-            #if ($!testResultSsh == "true")
-                <div id="testSshSuccess" class="aui-message aui-message-success">
+            #if($!testResultConnection == "true")
+                <div id="testConnectionSuccess" class="aui-message aui-message-success">
                     <div><b>Success!</b></div>
-                    <div>The SSH connection to Gerrit was successful.</div>
+                    <div>The <span style="text-transform: uppercase">$connectionType</span> connection to Gerrit was successful.</div>
                 </div>
-            #elseif ($!testResultSsh == "false")
-                <div id="testSshFail" class="aui-message aui-message-error">
-                    <div><b>Connection Failed!</b></div>
-                    <div>An error occurred while testing the SSH connection to Gerrit.</div>
-                    <blockquote>$!testErrorSsh</blockquote>
-                </div>
-            #end
-            #if ($!testResultHttp == "true")
-                <div id="testHttpSuccess" class="aui-message aui-message-success">
-                    <div><b>Success!</b></div>
-                    <div>The HTTP connection to Gerrit was successful.</div>
-                </div>
-            #elseif ($!testResultHttp == "false")
-                <div id="testHttpFail" class="aui-message aui-message-error">
-                    <div><b>Connection Failed!</b></div>
-                    <div>An error occurred while testing the HTTP connection to Gerrit.</div>
-                    <blockquote>$!testErrorHttp</blockquote>
+            #elseif($!testResultConnection == "false")
+                <div id="testConnectionFail" class="aui-message aui-message-error">
+                     <div><b>Connection Failed!</b></div>
+                     <div>An error occurred while testing the <span style="text-transform: uppercase">$connectionType</span> connection to Gerrit.</div>
+                     <blockquote>$!testErrorConnection</blockquote>
                 </div>
             #end
             <div>
@@ -57,66 +45,38 @@
                             $i18n.getText("gerrit.admin.connectionType.label"):
                             </label>
                         </td>
-                        <td><input style="width:40px; height:20px; margin-left:20px" type="radio" id="connectionTypeSSH" name="connectionType" class="text" value="ssh"
+                        <td>
+                            <input style="width:40px; height:20px; margin-left:20px" type="radio" id="connectionTypeSSH" name="connectionType" class="text" value="ssh"
                              #if ($!connectionType == "ssh") checked="checked" #end
-                             onchange="if(document.getElementById('testSshSuccess') !== null) {
-                                           document.getElementById('testSshSuccess').style.display='none';
+                             onchange="if(document.getElementById('testConnectionSuccess') !== null) {
+                                          document.getElementById('testConnectionSuccess').style.display='none';
                                        }
-                                       if(document.getElementById('testSshFail') !== null) {
-                                           document.getElementById('testSshFail').style.display='none';
+                                       if(document.getElementById('testConnectionFail') !== null) {
+                                          document.getElementById('testConnectionFail').style.display='none';
                                        }
-                                       if(document.getElementById('testHttpSuccess') !== null) {
-                                           document.getElementById('testHttpSuccess').style.display='none';
-                                       }
-                                       if(document.getElementById('testHttpFail') !== null) {
-                                           document.getElementById('testHttpFail').style.display='none';
-                                       }
-                                       if (document.getElementById('connectionTypeSSH').checked)
-                                       {
-                                           document.getElementById('httpData').style.display='none';
-                                           document.getElementById('sshData').style.display='';
-                                           document.getElementById('testHttp').style.display='none';
-                                           document.getElementById('testSsh').style.display='';
-                                       }
-                                       else
-                                       {
-                                           document.getElementById('httpData').style.display='';
-                                           document.getElementById('sshData').style.display='none';
-                                           document.getElementById('testHttp').style.display='';
-                                           document.getElementById('testSsh').style.display='none';
-                                       }"
-                             ><label style="margin-right:20px">SSH
-                              </label></td>
-                        <td><input style="width:40px; height:20px" type="radio" id="connectionTypeHTTP" name="connectionType" class="text" value="http"
+                                       var isSshConnection = document.getElementById('connectionTypeSSH').checked;
+                                       document.getElementById('httpData').style.display = isSshConnection ? 'none' : '';
+                                       document.getElementById('sshData').style.display = isSshConnection ? '' : 'none';
+                                       document.getElementById('testHttp').style.display = isSshConnection ? 'none' : '';
+                                       document.getElementById('testSsh').style.display = isSshConnection ? '' : 'none';"
+                             ><label style="margin-right:20px">SSH</label>
+                        </td>
+                        <td>
+                            <input style="width:40px; height:20px" type="radio" id="connectionTypeHTTP" name="connectionType" class="text" value="http"
                              #if ($!connectionType == "http") checked="checked" #end
-                             onchange="if(document.getElementById('testSshSuccess') !== null) {
-                                           document.getElementById('testSshSuccess').style.display='none';
+                             onchange="if(document.getElementById('testConnectionSuccess') !== null) {
+                                          document.getElementById('testConnectionSuccess').style.display='none';
                                        }
-                                       if(document.getElementById('testSshFail') !== null) {
-                                           document.getElementById('testSshFail').style.display='none';
+                                       if(document.getElementById('testConnectionFail') !== null) {
+                                          document.getElementById('testConnectionFail').style.display='none';
                                        }
-                                       if(document.getElementById('testHttpSuccess') !== null) {
-                                           document.getElementById('testHttpSuccess').style.display='none';
-                                       }
-                                       if(document.getElementById('testHttpFail') !== null) {
-                                           document.getElementById('testHttpFail').style.display='none';
-                                       }
-                                       if (document.getElementById('connectionTypeHTTP').checked)
-                                       {
-                                           document.getElementById('httpData').style.display='';
-                                           document.getElementById('sshData').style.display='none';
-                                           document.getElementById('testHttp').style.display='';
-                                           document.getElementById('testSsh').style.display='none';
-                                       }
-                                       else
-                                       {
-                                           document.getElementById('httpData').style.display='none';
-                                           document.getElementById('sshData').style.display='';
-                                           document.getElementById('testHttp').style.display='none';
-                                           document.getElementById('testSsh').style.display='';
-                                       }"
-                             ><label style="margin-right:20px">HTTP
-                             </label></td>
+                                       var isHttpConnection = document.getElementById('connectionTypeHTTP').checked;
+                                       document.getElementById('httpData').style.display = isHttpConnection ? '' : 'none';
+                                       document.getElementById('sshData').style.display = isHttpConnection ? 'none' : '';
+                                       document.getElementById('testHttp').style.display = isHttpConnection ? '' : 'none';
+                                       document.getElementById('testSsh').style.display = isHttpConnection ? 'none' : '';"
+                            ><label style="margin-right:20px">HTTP</label>
+                        </td>
                     </tr>
                 </table>
             </div>
