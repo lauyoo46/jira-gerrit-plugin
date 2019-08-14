@@ -191,7 +191,7 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
                 addApproval(approvals, jsonApprovals, label);
             }
             if(!approvals.isEmpty()) {
-                json.element("approvals", approvals);
+                json.element(GerritEventKeys.APPROVALS, approvals);
             }
         }
     }
