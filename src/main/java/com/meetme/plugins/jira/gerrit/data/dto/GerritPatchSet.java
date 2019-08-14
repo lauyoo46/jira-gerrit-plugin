@@ -93,7 +93,7 @@ public class GerritPatchSet extends PatchSet {
         try {
             this.setCreatedOn(sdf.parse(dateCreated));
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("Error when trying to format date! " + e);
         }
         if (jsonRevision.containsKey("kind")) {
             this.setKind(GerritChangeKind.fromString(GerritJsonEventFactory.getString(jsonRevision, "kind")));
