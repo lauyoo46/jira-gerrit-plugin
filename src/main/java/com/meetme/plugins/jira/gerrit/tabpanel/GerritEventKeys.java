@@ -26,4 +26,7 @@ public interface GerritEventKeys {
     public static final String LAST_UPDATED = "lastUpdated";
     public static final String OPEN = "open";
     public static final String STATUS = "status";
+    public static final String CONNECTION_TYPE_SSH = "ssh";
+    public static final String CONNECTION_TYPE_HTTP = "http";
+    public static final String URL__PREFIX = "http://";
 }
