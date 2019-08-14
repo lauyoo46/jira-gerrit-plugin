@@ -18,8 +18,10 @@ import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
-//TODO imports one-by one
-import com.sonymobile.tools.gerrit.gerritevents.*;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandler;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandlerHttp;
+import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandlerWithPersistedConnection;
 import com.sonymobile.tools.gerrit.gerritevents.http.HttpAuthentication;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.Authentication;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.SshException;
