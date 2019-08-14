@@ -14,7 +14,6 @@
 package com.meetme.plugins.jira.gerrit.data.dto;
 
 import com.meetme.plugins.jira.gerrit.tabpanel.GerritEventKeys;
-
 import com.sonymobile.tools.gerrit.gerritevents.GerritJsonEventFactory;
 import com.sonymobile.tools.gerrit.gerritevents.dto.GerritChangeStatus;
 import com.sonymobile.tools.gerrit.gerritevents.dto.attr.Account;
@@ -26,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import static com.meetme.plugins.jira.gerrit.tabpanel.GerritEventKeys.LAST_UPDATED;
@@ -177,147 +177,49 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
     private void convertApprovals(JSONObject json)
     {
         if (json.containsKey("labels")) {
-            boolean existsVerifiedApproval = false;
-            boolean existsCodeReviewApproval = false;
-            boolean existsValidatedApproval = false;
-            boolean existsPriorityApproval = false;
 
-            JSONObject jsonInner = json.getJSONObject("labels");
+            ArrayList<String> approvalLabels = new ArrayList<>();
+            approvalLabels.add("Verified");
+            approvalLabels.add("Code-Review");
+            approvalLabels.add("Validated");
+            approvalLabels.add("Priority");
+
+            JSONObject jsonApprovals = json.getJSONObject("labels");
             JSONArray approvals = new JSONArray();
 
-            if (jsonInner.containsKey("Verified")) {
-                existsVerifiedApproval = addVerifiedApproval(approvals, jsonInner);
+            for (String label: approvalLabels) {
+                addApproval(approvals, jsonApprovals, label);
             }
-            if(jsonInner.containsKey("Code-Review")) {
-                existsCodeReviewApproval = addCodeReviewApproval(approvals, jsonInner);
-            }
-            if(jsonInner.containsKey("Validated")) {
-                existsValidatedApproval = addValidatedApproval(approvals, jsonInner);
-            }
-            if(jsonInner.containsKey("Priority")) {
-                existsPriorityApproval = addPriorityApproval(approvals, jsonInner);
-            }
-
-            if(existsVerifiedApproval || existsCodeReviewApproval || existsValidatedApproval || existsPriorityApproval) {
+            if(!approvals.isEmpty()) {
                 json.element("approvals", approvals);
             }
         }
     }
 
-    private boolean addVerifiedApproval(JSONArray approvals, JSONObject jsonInner) {
+    private void addApproval(JSONArray approvals, JSONObject jsonApprovals, String label) {
 
-        JSONObject verifiedApproval = new JSONObject();
-        JSONArray verifiedArray = jsonInner.getJSONObject("Verified").getJSONArray("all");
-        for (int i = 0; i < verifiedArray.size(); ++i) {
-            JSONObject verifiedObject = verifiedArray.getJSONObject(i);
-            if (!verifiedObject.getString("username").equals("builderbot")
-                    && !verifiedObject.getString("value").equals("0")) {
-                String value = verifiedObject.getString("value");
-                String type = "Verified";
-                String description = "Verified";
-                String date = verifiedObject.getString("date");
-                String name = verifiedObject.getString("name");
-                String username = verifiedObject.getString("username");
-                JSONObject verifiedBy = new JSONObject();
-                verifiedBy.element("name", name);
-                verifiedBy.element("username", username);
-                verifiedApproval.element("type", type);
-                verifiedApproval.element("description", description);
-                verifiedApproval.element("value", value);
-                verifiedApproval.element("grantedOn", date);
-                verifiedApproval.element("by", verifiedBy);
-                approvals.element(verifiedApproval);
-                return true;
+        JSONObject approvalForLabel = new JSONObject();
+        JSONArray dataForLabelArray = jsonApprovals.getJSONObject(label).getJSONArray("all");
+        for (int i = 0; i < dataForLabelArray.size(); ++i) {
+            JSONObject dataForLabelObject = dataForLabelArray.getJSONObject(i);
+            if(!dataForLabelObject.getString("username").equals("builderbot")
+                    && !dataForLabelObject.getString("value").equals("0")) {
+                String value = dataForLabelObject.getString("value");
+                String date = dataForLabelObject.getString("date");
+                String name = dataForLabelObject.getString("name");
+                String username = dataForLabelObject.getString("username");
+                JSONObject approvalBy = new JSONObject();
+                approvalBy.element("name", name);
+                approvalBy.element("username", username);
+                approvalForLabel.element("type", label);
+                approvalForLabel.element("description", label);
+                approvalForLabel.element("value", value);
+                approvalForLabel.element("grantedOn", date);
+                approvalForLabel.element("by", approvalBy);
+                approvals.element(approvalForLabel);
             }
         }
-        return false;
-    }
 
-    private boolean addCodeReviewApproval(JSONArray approvals, JSONObject jsonInner) {
-
-        JSONObject codeReviewApproval = new JSONObject();
-        JSONArray codeReviewArray = jsonInner.getJSONObject("Code-Review").getJSONArray("all");
-        for (int i = 0; i < codeReviewArray.size(); ++i) {
-            JSONObject codeReviewObject = codeReviewArray.getJSONObject(i);
-            if (!codeReviewObject.getString("username").equals("builderbot")
-                    && !codeReviewObject.getString("value").equals("0")) {
-                String value = codeReviewObject.getString("value");
-                String type = "Code-Review";
-                String description = "Code-Review";
-                String date = codeReviewObject.getString("date");
-                String name = codeReviewObject.getString("name");
-                String username = codeReviewObject.getString("username");
-                JSONObject codeReviewBy = new JSONObject();
-                codeReviewBy.element("name", name);
-                codeReviewBy.element("username", username);
-                codeReviewApproval.element("type", type);
-                codeReviewApproval.element("description", description);
-                codeReviewApproval.element("value", value);
-                codeReviewApproval.element("grantedOn", date);
-                codeReviewApproval.element("by", codeReviewBy);
-                approvals.element(codeReviewApproval);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean addValidatedApproval(JSONArray approvals, JSONObject jsonInner) {
-
-        JSONObject validatedApproval = new JSONObject();
-        JSONArray validatedArray = jsonInner.getJSONObject("Validated").getJSONArray("all");
-        for (int i = 0; i < validatedArray.size(); ++i) {
-            JSONObject validatedObject = validatedArray.getJSONObject(i);
-            if (!validatedObject.getString("username").equals("builderbot")
-                    && !validatedObject.getString("value").equals("0")) {
-                String value = validatedObject.getString("value");
-                String type = "Validated";
-                String description = "Validated";
-                String date = validatedObject.getString("date");
-                String name = validatedObject.getString("name");
-                String username = validatedObject.getString("username");
-                JSONObject validatedBy = new JSONObject();
-                validatedBy.element("name", name);
-                validatedBy.element("username", username);
-                validatedApproval.element("type", type);
-                validatedApproval.element("description", description);
-                validatedApproval.element("value", value);
-                validatedApproval.element("grantedOn", date);
-                validatedApproval.element("by", validatedBy);
-                approvals.element(validatedApproval);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean addPriorityApproval(JSONArray approvals, JSONObject jsonInner) {
-
-        JSONObject priorityApproval = new JSONObject();
-        JSONArray priorityArray = jsonInner.getJSONObject("Priority").getJSONArray("all");
-        for (int i = 0; i < priorityArray.size(); ++i) {
-            JSONObject priorityObject = priorityArray.getJSONObject(i);
-            if (!priorityObject.getString("username").equals("builderbot")
-                    && !priorityObject.getString("value").equals("0")) {
-                String value = priorityObject.getString("value");
-                String type = "Priority";
-                String description = "Priority";
-                String date = priorityObject.getString("date");
-                String name = priorityObject.getString("name");
-                String username = priorityObject.getString("username");
-                JSONObject priorityBy = new JSONObject();
-                priorityBy.element("name", name);
-                priorityBy.element("username", username);
-                priorityApproval.element("type", type);
-                priorityApproval.element("description", description);
-                priorityApproval.element("value", value);
-                priorityApproval.element("grantedOn", date);
-                priorityApproval.element("by", priorityBy);
-                approvals.element(priorityApproval);
-                return true;
-            }
-        }
-        return false;
     }
 
     public Date getLastUpdated() {
