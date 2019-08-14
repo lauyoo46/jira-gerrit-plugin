@@ -57,7 +57,6 @@ public class GerritPatchSet extends PatchSet {
     @Override
     public void fromJson(JSONObject json) {
         log.debug("GerritPatchSet from json: " + json.toString(4, 0));
-        super.fromJson(json);
         this.fromJsonSSH(json);
     }
 
