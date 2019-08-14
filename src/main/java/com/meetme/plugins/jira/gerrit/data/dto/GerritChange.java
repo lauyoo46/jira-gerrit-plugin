@@ -62,7 +62,7 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
 
     public GerritChange(JSONObject obj, String connectionType) {
 
-        if(connectionType.equals("ssh")) {
+        if(connectionType.equals(GerritEventKeys.CONNECTION_TYPE_SSH)) {
             this.fromJsonSSH(obj, connectionType);
         }
         else {
@@ -96,7 +96,7 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
     @Override
     public void fromJson(JSONObject json) {
         super.fromJson(json);
-        this.fromJsonSSH(json, "ssh"); //todo: cumva trebuie transmis ssh ca si tip de conexiune
+        this.fromJsonSSH(json, GerritEventKeys.CONNECTION_TYPE_SSH);
     }
 
     private void fromJsonSSH(JSONObject json, String connectionType) {
@@ -143,9 +143,8 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
         String scheme = GerritJsonEventFactory.getString(urlJson, "scheme");
         String schemeSpecificPart = GerritJsonEventFactory.getString(urlJson, "schemeSpecificPart");
         String number = GerritJsonEventFactory.getString(json, "_number");
-        //todo: variabila field pt "http://" ?
-        if(!scheme.contains("http://")) {
-            scheme = "http://" + scheme;
+        if(!scheme.contains(GerritEventKeys.URL__PREFIX)) {
+            scheme = GerritEventKeys.URL__PREFIX + scheme;
         }
         String url = scheme + ":" + schemeSpecificPart + "/" + number;
         this.setUrl(url);

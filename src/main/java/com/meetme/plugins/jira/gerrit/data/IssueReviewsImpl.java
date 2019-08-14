@@ -18,11 +18,11 @@ import com.meetme.plugins.jira.gerrit.data.dto.GerritChange;
 
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
+import com.meetme.plugins.jira.gerrit.tabpanel.GerritEventKeys;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryException;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandlerHttp;
 import com.sonymobile.tools.gerrit.gerritevents.GerritQueryHandlerWithPersistedConnection;
 import com.sonymobile.tools.gerrit.gerritevents.QueryHandler;
-import com.sonymobile.tools.gerrit.gerritevents.dto.GerritEventKeys;
 import com.sonymobile.tools.gerrit.gerritevents.http.HttpAuthentication;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.Authentication;
 import com.sonymobile.tools.gerrit.gerritevents.ssh.SshException;
@@ -97,7 +97,7 @@ public class IssueReviewsImpl implements IssueReviewsManager {
         String connectionType = configuration.getConnectionType();
         List<JSONObject> reviews;
 
-        if(connectionType.equals("ssh")) {
+        if(connectionType.equals(GerritEventKeys.CONNECTION_TYPE_SSH)) {
 
             if (!configuration.isSshValid()) {
                 throw new GerritConfiguration.NotConfiguredException("Not configured for SSH access");
@@ -150,7 +150,7 @@ public class IssueReviewsImpl implements IssueReviewsManager {
                 continue;
             }
 
-            if(connectionType.equals("http")) {
+            if(connectionType.equals(GerritEventKeys.CONNECTION_TYPE_HTTP)) {
                 obj.element("url", configuration.getHttpBaseUrl());
             }
             changes.add(new GerritChange(obj, connectionType));
