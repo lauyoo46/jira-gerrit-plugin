@@ -116,7 +116,6 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
 
     private void fromJsonHTTP(JSONObject json, String connectionType) {
 
-        //todo: setteri intr-o metoda
         this.setProject(GerritJsonEventFactory.getString(json, "project"));
         this.setBranch(GerritJsonEventFactory.getString(json, "branch"));
         this.setId(GerritJsonEventFactory.getString(json, "change_id"));
@@ -127,7 +126,6 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
         if (json.containsKey("owner")) {
             this.setOwner(new Account(json.getJSONObject("owner")));
         }
-
         String revision = GerritJsonEventFactory.getString(json, "current_revision");
         JSONObject jsonRevision = json.getJSONObject("revisions").getJSONObject(revision);
         JSONObject jsonCommit = jsonRevision.getJSONObject("commit");
@@ -135,14 +133,12 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
             String commitMessage = GerritJsonEventFactory.getString(jsonCommit, "message");
             this.setCommitMessage(commitMessage);
         }
-
         if (json.containsKey("topic")) {
             String topicName = GerritJsonEventFactory.getString(json, "topic");
             if (StringUtils.isNotEmpty(topicName)) {
                 this.setTopicObject(new Topic(topicName));
             }
         }
-
         JSONObject urlJson = json.getJSONObject("url");
         String scheme = GerritJsonEventFactory.getString(urlJson, "scheme");
         String schemeSpecificPart = GerritJsonEventFactory.getString(urlJson, "schemeSpecificPart");

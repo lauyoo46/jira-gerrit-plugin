@@ -58,8 +58,8 @@
                                        document.getElementById('httpData').style.display = isSshConnection ? 'none' : '';
                                        document.getElementById('sshData').style.display = isSshConnection ? '' : 'none';
                                        document.getElementById('testHttp').style.display = isSshConnection ? 'none' : '';
-                                       document.getElementById('testSsh').style.display = isSshConnection ? '' : 'none';"
-                             ><label style="margin-right:20px">SSH</label>
+                                       document.getElementById('testSsh').style.display = isSshConnection ? '' : 'none';">
+                             <label style="margin-right:20px">SSH</label>
                         </td>
                         <td>
                             <input style="width:40px; height:20px" type="radio" id="connectionTypeHTTP" name="connectionType" class="text" value="http"
@@ -74,70 +74,69 @@
                                        document.getElementById('httpData').style.display = isHttpConnection ? '' : 'none';
                                        document.getElementById('sshData').style.display = isHttpConnection ? 'none' : '';
                                        document.getElementById('testHttp').style.display = isHttpConnection ? '' : 'none';
-                                       document.getElementById('testSsh').style.display = isHttpConnection ? 'none' : '';"
-                            ><label style="margin-right:20px">HTTP</label>
+                                       document.getElementById('testSsh').style.display = isHttpConnection ? 'none' : '';">
+                             <label style="margin-right:20px">HTTP</label>
                         </td>
                     </tr>
                 </table>
             </div>
 
             <div id="sshData"
-            #if ($!connectionType == "http") style="display:none;" #end
-            >
-            <h3>$i18n.getText("gerrit.admin.ssh.label")</h3>
-            <div class="field-group">
-                <label for="sshHostname">
-                    $i18n.getText("gerrit.admin.host.label"):
-                    <span class="aui-icon icon-required"></span>
-                </label>
-                <input type="text" id="sshHostname" name="sshHostname" class="text" value="$!sshHostname" />
-                <div class="description">$i18n.getText("gerrit.admin.host.description")</div>
-            </div>
-            <div class="field-group">
-                <label for="sshPort">
-                    $i18n.getText("gerrit.admin.port.label"):
-                    <span class="aui-icon icon-required"></span>
-                </label>
-                <input type="text" id="sshPort" name="sshPort" class="text short-field" value="$!sshPort" />
-                <div class="description">$i18n.getText("gerrit.admin.port.description")</div>
-            </div>
-            <div class="field-group">
-                <label for="sshUsername">
-                    $i18n.getText("gerrit.admin.username.label")
-                    <span class="aui-icon icon-required"></span>
-                </label>
-                <input type="text" id="sshUsername" name="sshUsername" class="text" value="$!sshUsername" />
-                <div class="description">$i18n.getText("gerrit.admin.username.description")</div>
-            </div>
-            <div class="field-group">
-                <label for="sshTimeout">
-                	$i18n.getText("gerrit.admin.sshTimeout.label")
-                	<span class="aui-icon icon-required"></span>
-                </label>
-                <input type="text" id="sshTimeout" name="sshTimeout" class="text" value="$!sshTimeout" />
-                <div class="description">$i18n.getText("gerrit.admin.sshTimeout.description")</div>
-            </div>
-            <div class="field-group">
-                <label for="sshPrivateKey">
-                    $i18n.getText("gerrit.admin.sshKey.label"):
-                    <span class="aui-icon icon-required"></span>
-                </label>
-                <input type="file" id="sshPrivateKey" name="sshPrivateKey" class="upfile" />
-                <div class="description">
-                    $i18n.getText("gerrit.admin.sshKey.description")
+            #if ($!connectionType == "http") style="display:none;" #end>
+                <h3>$i18n.getText("gerrit.admin.ssh.label")</h3>
+                <div class="field-group">
+                    <label for="sshHostname">
+                        $i18n.getText("gerrit.admin.host.label"):
+                        <span class="aui-icon icon-required"></span>
+                    </label>
+                    <input type="text" id="sshHostname" name="sshHostname" class="text" value="$!sshHostname" />
+                    <div class="description">$i18n.getText("gerrit.admin.host.description")</div>
                 </div>
-                #if ($!sshPrivateKey)
-                <div class="aui-message info">
-                    <span class="aui-icon icon-info"></span>
-                    $i18n.getText("gerrit.admin.sshKey.isOnFile")
+                <div class="field-group">
+                    <label for="sshPort">
+                        $i18n.getText("gerrit.admin.port.label"):
+                        <span class="aui-icon icon-required"></span>
+                    </label>
+                    <input type="text" id="sshPort" name="sshPort" class="text short-field" value="$!sshPort" />
+                    <div class="description">$i18n.getText("gerrit.admin.port.description")</div>
                 </div>
-                #elseif (!$!sshPrivateKey && $!sshHostname)
-                <div class="aui-message warning">
-                    <span class="aui-icon icon-warning"></span>
-                    $i18n.getText("gerrit.admin.sshKey.missing")
+                <div class="field-group">
+                    <label for="sshUsername">
+                        $i18n.getText("gerrit.admin.username.label")
+                        <span class="aui-icon icon-required"></span>
+                    </label>
+                    <input type="text" id="sshUsername" name="sshUsername" class="text" value="$!sshUsername" />
+                    <div class="description">$i18n.getText("gerrit.admin.username.description")</div>
                 </div>
-                #end
-            </div>
+                <div class="field-group">
+                    <label for="sshTimeout">
+                	    $i18n.getText("gerrit.admin.sshTimeout.label")
+                	    <span class="aui-icon icon-required"></span>
+                    </label>
+                    <input type="text" id="sshTimeout" name="sshTimeout" class="text" value="$!sshTimeout" />
+                    <div class="description">$i18n.getText("gerrit.admin.sshTimeout.description")</div>
+                </div>
+                <div class="field-group">
+                    <label for="sshPrivateKey">
+                        $i18n.getText("gerrit.admin.sshKey.label"):
+                        <span class="aui-icon icon-required"></span>
+                    </label>
+                    <input type="file" id="sshPrivateKey" name="sshPrivateKey" class="upfile" />
+                    <div class="description">
+                        $i18n.getText("gerrit.admin.sshKey.description")
+                    </div>
+                    #if ($!sshPrivateKey)
+                    <div class="aui-message info">
+                        <span class="aui-icon icon-info"></span>
+                        $i18n.getText("gerrit.admin.sshKey.isOnFile")
+                    </div>
+                    #elseif (!$!sshPrivateKey && $!sshHostname)
+                    <div class="aui-message warning">
+                        <span class="aui-icon icon-warning"></span>
+                        $i18n.getText("gerrit.admin.sshKey.missing")
+                    </div>
+                    #end
+                </div>
             </div>
 
             <!-- This is not yet implemented: for JSON-RPC access -->
