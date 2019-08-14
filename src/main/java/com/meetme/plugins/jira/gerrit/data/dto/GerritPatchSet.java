@@ -65,18 +65,7 @@ public class GerritPatchSet extends PatchSet {
         log.debug("GerritPatchSet from json SSH: " + json.toString(4, 0));
 
         super.fromJson(json);
-        if (json.containsKey(GerritEventKeys.APPROVALS)) {
-            JSONArray eventApprovals = json.getJSONArray(GerritEventKeys.APPROVALS);
-            approvals = new ArrayList<>(eventApprovals.size());
-
-            for (int i = 0; i < eventApprovals.size(); i++) {
-                GerritApproval approval = new GerritApproval(eventApprovals.getJSONObject(i));
-                approvals.add(approval);
-            }
-        } else {
-            log.warn("GerritPatchSet contains no approvals key.");
-        }
-
+        extractApprovals(json);
     }
 
     private void fromJsonHTTP(JSONObject json) {
@@ -102,8 +91,10 @@ public class GerritPatchSet extends PatchSet {
         if (jsonRevision.containsKey("uploader")) {
             this.setUploader(new Account(jsonRevision.getJSONObject("uploader")));
         }
+        extractApprovals(json);
+    }
 
-        //TODO extract method
+    private void extractApprovals(JSONObject json) {
         if (json.containsKey(GerritEventKeys.APPROVALS)) {
             JSONArray eventApprovals = json.getJSONArray(GerritEventKeys.APPROVALS);
             approvals = new ArrayList<>(eventApprovals.size());
