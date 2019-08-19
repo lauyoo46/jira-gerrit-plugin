@@ -95,7 +95,6 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
 
     @Override
     public void fromJson(JSONObject json) {
-        super.fromJson(json);
         this.fromJsonSSH(json, GerritEventKeys.CONNECTION_TYPE_SSH);
     }
 
