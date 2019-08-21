@@ -125,12 +125,14 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
         if (json.containsKey("owner")) {
             this.setOwner(new Account(json.getJSONObject("owner")));
         }
-        String revision = GerritJsonEventFactory.getString(json, "current_revision");
-        JSONObject jsonRevision = json.getJSONObject("revisions").getJSONObject(revision);
-        JSONObject jsonCommit = jsonRevision.getJSONObject("commit");
-        if(jsonCommit.containsKey("message")) {
-            String commitMessage = GerritJsonEventFactory.getString(jsonCommit, "message");
-            this.setCommitMessage(commitMessage);
+        if(json.containsKey("current_revision")) {
+            String revision = GerritJsonEventFactory.getString(json, "current_revision");
+            JSONObject jsonRevision = json.getJSONObject("revisions").getJSONObject(revision);
+            JSONObject jsonCommit = jsonRevision.getJSONObject("commit");
+            if (jsonCommit.containsKey("message")) {
+                String commitMessage = GerritJsonEventFactory.getString(jsonCommit, "message");
+                this.setCommitMessage(commitMessage);
+            }
         }
         if (json.containsKey("topic")) {
             String topicName = GerritJsonEventFactory.getString(json, "topic");
@@ -138,18 +140,19 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
                 this.setTopicObject(new Topic(topicName));
             }
         }
-        JSONObject urlJson = json.getJSONObject("url");
-        String scheme = GerritJsonEventFactory.getString(urlJson, "scheme");
-        String schemeSpecificPart = GerritJsonEventFactory.getString(urlJson, "schemeSpecificPart");
-        String number = GerritJsonEventFactory.getString(json, "_number");
-        if(!scheme.contains(GerritEventKeys.URL__PREFIX)) {
-            scheme = GerritEventKeys.URL__PREFIX + scheme;
+        if(json.containsKey("url")) {
+            JSONObject urlJson = json.getJSONObject("url");
+            String scheme = GerritJsonEventFactory.getString(urlJson, "scheme");
+            String schemeSpecificPart = GerritJsonEventFactory.getString(urlJson, "schemeSpecificPart");
+            String number = GerritJsonEventFactory.getString(json, "_number");
+            if (!scheme.contains(com.sonymobile.tools.gerrit.gerritevents.dto.GerritEventKeys.URL_PREFIX)) {
+                scheme = com.sonymobile.tools.gerrit.gerritevents.dto.GerritEventKeys.URL_PREFIX + scheme;
+            }
+            String url = scheme + ":" + schemeSpecificPart + "/" + number;
+            this.setUrl(url);
         }
-        String url = scheme + ":" + schemeSpecificPart + "/" + number;
-        this.setUrl(url);
-
-        String dateUpdated = json.getString("updated");
-        String dateCreated = json.getString("created");
+        String dateUpdated = GerritJsonEventFactory.getString(json,"updated");
+        String dateCreated = GerritJsonEventFactory.getString(json, "created");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             this.setCreatedOn(sdf.parse(dateCreated));
@@ -197,27 +200,28 @@ public class GerritChange extends Change implements Comparable<GerritChange> {
     private void addApproval(JSONArray approvals, JSONObject jsonApprovals, String label) {
 
         JSONObject approvalForLabel = new JSONObject();
-        JSONArray dataForLabelArray = jsonApprovals.getJSONObject(label).getJSONArray("all");
-        for (int i = 0; i < dataForLabelArray.size(); ++i) {
-            JSONObject dataForLabelObject = dataForLabelArray.getJSONObject(i);
-            if(!dataForLabelObject.getString("username").equals("builderbot")
-                    && !dataForLabelObject.getString("value").equals("0")) {
-                String value = dataForLabelObject.getString("value");
-                String date = dataForLabelObject.getString("date");
-                String name = dataForLabelObject.getString("name");
-                String username = dataForLabelObject.getString("username");
-                JSONObject approvalBy = new JSONObject();
-                approvalBy.element("name", name);
-                approvalBy.element("username", username);
-                approvalForLabel.element("type", label);
-                approvalForLabel.element("description", label);
-                approvalForLabel.element("value", value);
-                approvalForLabel.element("grantedOn", date);
-                approvalForLabel.element("by", approvalBy);
-                approvals.element(approvalForLabel);
+        if(jsonApprovals.containsKey(label)) {
+            JSONArray dataForLabelArray = jsonApprovals.getJSONObject(label).getJSONArray("all");
+            for (int i = 0; i < dataForLabelArray.size(); ++i) {
+                JSONObject dataForLabelObject = dataForLabelArray.getJSONObject(i);
+                if (!dataForLabelObject.getString("username").equals("builderbot")
+                        && !dataForLabelObject.getString("value").equals("0")) {
+                    String value = dataForLabelObject.getString("value");
+                    String date = dataForLabelObject.getString("date");
+                    String name = dataForLabelObject.getString("name");
+                    String username = dataForLabelObject.getString("username");
+                    JSONObject approvalBy = new JSONObject();
+                    approvalBy.element("name", name);
+                    approvalBy.element("username", username);
+                    approvalForLabel.element("type", label);
+                    approvalForLabel.element("description", label);
+                    approvalForLabel.element("value", value);
+                    approvalForLabel.element("grantedOn", date);
+                    approvalForLabel.element("by", approvalBy);
+                    approvals.element(approvalForLabel);
+                }
             }
         }
-
     }
 
     public Date getLastUpdated() {
