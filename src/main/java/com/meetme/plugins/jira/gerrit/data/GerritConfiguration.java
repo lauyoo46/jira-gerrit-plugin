@@ -46,7 +46,7 @@ public interface GerritConfiguration {
     String FIELD_KNOWN_GERRIT_PROJECTS = "knownGerritProjects";
     String FIELD_USE_GERRIT_PROJECT_WHITELIST = "useGerritProjectWhitelist";
 
-    long DEFAULT_CACHE_TIMEOUT = 0;
+    long DEFAULT_CACHE_TIMEOUT = 30000;
     String FIELD_CACHE_TIMEOUT = "cacheTimeout";
 
     String getConnectionType();

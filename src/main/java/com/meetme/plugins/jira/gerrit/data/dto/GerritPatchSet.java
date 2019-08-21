@@ -46,7 +46,7 @@ public class GerritPatchSet extends PatchSet {
     }
 
     public GerritPatchSet(JSONObject json, String connectionType) {
-        if(connectionType.equals("ssh")) {
+        if(connectionType.equals(com.meetme.plugins.jira.gerrit.tabpanel.GerritEventKeys.CONNECTION_TYPE_SSH)) {
             this.fromJsonSSH(json);
         }
         else {
@@ -68,7 +68,7 @@ public class GerritPatchSet extends PatchSet {
     }
 
     private void fromJsonHTTP(JSONObject json) {
-        log.debug("GerritPatchSet from json HTTP: " + json.toString(4, 0));
+        log.debug("GerritPatchSet from json HTTP: {}", json.toString(4, 0));
 
         String revision = GerritJsonEventFactory.getString(json, "current_revision");
         JSONObject jsonRevision = json.getJSONObject("revisions").getJSONObject(revision);
@@ -81,7 +81,7 @@ public class GerritPatchSet extends PatchSet {
         try {
             this.setCreatedOn(sdf.parse(dateCreated));
         } catch (ParseException e) {
-            log.error("Error when trying to format date! " + e);
+            log.error("Error when trying to format date! " , e);
         }
         if (jsonRevision.containsKey("kind")) {
             this.setKind(GerritChangeKind.fromString(GerritJsonEventFactory.getString(jsonRevision, "kind")));
