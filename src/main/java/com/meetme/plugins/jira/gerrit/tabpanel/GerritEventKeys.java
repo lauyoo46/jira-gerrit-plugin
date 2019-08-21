@@ -28,5 +28,4 @@ public interface GerritEventKeys {
     public static final String STATUS = "status";
     public static final String CONNECTION_TYPE_SSH = "ssh";
     public static final String CONNECTION_TYPE_HTTP = "http";
-    //public static final String URL_PREFIX = "http://";
 }
